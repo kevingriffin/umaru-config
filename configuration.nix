@@ -8,6 +8,8 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./iknow.nix
+      ./eikaiwa-servers.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -24,6 +26,7 @@
   ];
 
   boot.cleanTmpDir = true;
+  hardware.cpu.intel.updateMicrocode = true;
 
   # networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -39,30 +42,24 @@
      defaultLocale = "en_US.UTF-8";
    };
 
-   nix.gc.automatic = true;
-   nix.gc.dates = "Monday 03:15";
-   nix.gc.options = "--delete-older-than 14d";
-
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+
    environment.systemPackages = with pkgs; [
      neovim
      gitAndTools.diff-so-fancy
      gitFull
-     ruby
      ag
-     bundix
      colordiff
      fzf
      gnumake
      httpie
      jq
      lsof
-     phantomjs
      tcpdump
      tig
      tmux
@@ -80,14 +77,17 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh = { 
+  services.openssh = {
     enable = true;
     passwordAuthentication = false;
   };
 
+  networking.hostName = "umaru";
+
   networking.firewall = {
     allowPing = true;
     rejectPackets = true;
+    allowedTCPPorts = [ 3000 ] ;
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -119,11 +119,11 @@
      isNormalUser = true;
      home = "/home/kevin";
      description = "Kevin Griffin";
-     extraGroups = [ "wheel" "networkmanager" ];
+     extraGroups = [ "wheel" ];
      uid = 1000;
    };
 
-   nix.buildCores = 0;
+   nix.buildCores = 8;
    nix.useSandbox = true;
 
   # This value determines the NixOS release with which your system is to be
@@ -131,5 +131,4 @@
   # servers. You should change this only after NixOS release notes say you
   # should.
   system.stateVersion = "18.09"; # Did you read the comment?
-
 }
