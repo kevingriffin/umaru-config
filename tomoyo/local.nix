@@ -25,9 +25,11 @@
      seeing_is_believing
   ];
 
- users.users.git = {
-   isNormalUser = true;
-   home = "/home/git";
-   description = "git";
- };
+  programs.mosh.enable = true;
+
+  users.users.git = {
+    isNormalUser = true;
+    home = "/home/git";
+    description = "git";
+  };
 }
