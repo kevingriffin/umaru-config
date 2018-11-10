@@ -1,6 +1,11 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ../overlays.nix
+    ../eikaiwa-servers.nix
+   ];
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = false;
@@ -12,6 +17,11 @@
      preLVM = true;
      allowDiscards = true;
    }
+  ];
+
+  environment.systemPackages = with pkgs; [
+     eikaiwa-packages
+     seeing_is_believing
   ];
 
   hardware.cpu.intel.updateMicrocode = true;
