@@ -9,7 +9,6 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./local.nix
-      ./eikaiwa-servers.nix
     ];
 
   boot.cleanTmpDir = true;
