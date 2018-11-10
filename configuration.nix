@@ -8,25 +8,11 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./iknow.nix
+      ./local.nix
       ./eikaiwa-servers.nix
     ];
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = false;
-
-  boot.initrd.luks.devices = [
-   {
-     name = "root";
-     device = "/dev/disk/by-uuid/72bba5e8-fc90-440f-b7a0-ef3d989ad7ad";
-     preLVM = true;
-     allowDiscards = true;
-   }
-  ];
-
   boot.cleanTmpDir = true;
-  hardware.cpu.intel.updateMicrocode = true;
 
   # networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -41,10 +27,6 @@
      consoleKeyMap = "us";
      defaultLocale = "en_US.UTF-8";
    };
-
-
-  # Set your time zone.
-  time.timeZone = "Asia/Tokyo";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -80,9 +62,8 @@
   services.openssh = {
     enable = true;
     passwordAuthentication = false;
+    permitRootLogin = "no";
   };
-
-  networking.hostName = "umaru";
 
   networking.firewall = {
     allowPing = true;
@@ -123,7 +104,6 @@
      uid = 1000;
    };
 
-   nix.buildCores = 8;
    nix.useSandbox = true;
 
   # This value determines the NixOS release with which your system is to be
