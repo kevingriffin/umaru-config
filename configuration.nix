@@ -94,6 +94,9 @@
   # services.xserver.displayManager.sddm.enable = true;
   # services.xserver.desktopManager.plasma5.enable = true;
 
+   programs.fish.enable = true;
+   users.defaultUserShell = "/run/current-system/sw/bin/fish";
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.kevin = {
      isNormalUser = true;
