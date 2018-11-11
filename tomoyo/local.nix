@@ -31,9 +31,10 @@
     after = [ "network.target" ];
     description = "Start a proxy for Plex from iPv4 to iPv6";
     serviceConfig = {
-      Type = "forking";
+      Type = "simple";
       User = "root";
-      ExecStart = ''${pkgs.socat}/bin/socat -v OPENSSL-LISTEN:32400,fork,cert=/home/kevin/certs/wildcard.kevin.jp.pem,key=/home/kevin/certs/wildcard.kevin.jp.key,verify=0 TCP6:plex.kevin.jp:32400
+      Restart = "on-failure";
+      ExecStart = ''${pkgs.socat}/bin/socat -dF OPENSSL-LISTEN:32400,fork,cert=/home/kevin/certs/wildcard.kevin.jp.pem,key=/home/kevin/certs/wildcard.kevin.jp.key,verify=0 TCP6:plex.kevin.jp:32400
 '';
     };
  };
