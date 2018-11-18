@@ -27,7 +27,7 @@
   ];
 
   hardware.cpu.intel.updateMicrocode = true;
-  networking.hostName = "umaru";
+  networking.hostName = "erika";
 
   nix.buildCores = 8;
 }
