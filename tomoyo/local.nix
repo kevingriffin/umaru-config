@@ -26,7 +26,7 @@
      socat
   ];
 
-   systemd.services.socat-proxy = {
+  systemd.services.socat-proxy = {
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     description = "Start a proxy for Plex from iPv4 to iPv6";
@@ -34,14 +34,11 @@
       Type = "simple";
       User = "root";
       Restart = "on-failure";
-      ExecStart = ''${pkgs.socat}/bin/socat -dF TCP-LISTEN:32400,fork, TCP6:umaru.kevin.jp:32400
-'';
+      ExecStart = ''${pkgs.socat}/bin/socat -dF TCP-LISTEN:32400,fork, TCP6:umaru.kevin.jp:32400'';
     };
- };
+  };
 
- networking.firewall.allowedTCPPorts = [ 32400 ];
-
-  programs.mosh.enable = true;
+  networking.firewall.allowedTCPPorts = [ 32400 ];
 
   users.users.git = {
     isNormalUser = true;
