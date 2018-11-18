@@ -19,6 +19,8 @@
    }
   ];
 
+  boot.kernelParams = [ "nomodeset" ];
+
   environment.systemPackages = with pkgs; [
      eikaiwa-packages
      seeing_is_believing
