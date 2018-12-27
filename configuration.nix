@@ -30,6 +30,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
+   nixpkgs.config.allowUnfree = true;
+
    environment.systemPackages = with pkgs; [
      neovim
      gitAndTools.diff-so-fancy
@@ -48,6 +50,7 @@
      tree
      usbutils
      wireshark
+     _1password
    ];
 
   # Some programs need SUID wrappers, can be configured further or are
