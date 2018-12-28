@@ -51,6 +51,7 @@
      usbutils
      wireshark
      _1password
+     borgbackup
    ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -100,6 +101,9 @@
 
    programs.fish.enable = true;
    users.defaultUserShell = "/run/current-system/sw/bin/fish";
+
+   # Use neovim as default editor
+   environment.variables.EDITOR = "nvim";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.kevin = {
