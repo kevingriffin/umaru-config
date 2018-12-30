@@ -52,6 +52,7 @@
      wireshark
      _1password
      borgbackup
+     certbot
    ];
 
   # Some programs need SUID wrappers, can be configured further or are
