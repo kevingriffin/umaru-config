@@ -37,6 +37,7 @@
      gitAndTools.diff-so-fancy
      gitFull
      ag
+     bind
      colordiff
      fzf
      gnumake
