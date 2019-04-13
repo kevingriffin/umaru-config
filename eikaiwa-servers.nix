@@ -48,7 +48,7 @@ in
 {
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql100;
+    package = pkgs.postgresql_10;
     extraConfig = ''
       autovacuum = off
     '';
