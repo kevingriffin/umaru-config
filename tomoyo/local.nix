@@ -28,7 +28,19 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 32400 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 32400 ];
+
+  services.nginx = {
+  enable = true;
+  recommendedProxySettings = true;
+  virtualHosts."tomoyo.kevin.jp" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://localhost:3000";
+    };
+  };
+};
 
   users.users.git = {
     isNormalUser = true;
