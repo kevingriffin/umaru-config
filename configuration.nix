@@ -4,6 +4,9 @@
 
 { config, pkgs, ... }:
 
+let
+  unstablePkgs = import<nixpkgs-unstable> {};
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -32,6 +35,7 @@
 
    nixpkgs.config.allowUnfree = true;
 
+
    environment.systemPackages = with pkgs; [
      neovim
      gitAndTools.diff-so-fancy
@@ -53,7 +57,7 @@
      wireshark
      _1password
      borgbackup
-     certbot
+     unstablePkgs.certbot
    ];
 
   # Some programs need SUID wrappers, can be configured further or are
