@@ -31,11 +31,17 @@
   environment.systemPackages = with pkgs; [
      eikaiwa-packages
      seeing_is_believing
+     yubikey-manager
+     opensc
   ];
+
+  environment.variables.OPENSC="${pkgs.opensc}/lib/pkcs11/opensc-pkcs11.so";
+
 
   hardware.cpu.intel.updateMicrocode = true;
   networking.hostName = "erika";
   networking.hostId = "a5621c46";
+  services.pcscd.enable = true;
 
   nix.buildCores = 8;
 }
