@@ -51,6 +51,8 @@ in
     package = pkgs.postgresql_10;
     extraConfig = ''
       autovacuum = off
+      synchronous_commit = off
+      synchronous_standby_names='*'
     '';
   };
 
