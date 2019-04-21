@@ -36,7 +36,7 @@
   ];
 
   environment.variables.OPENSC="${pkgs.opensc}/lib/pkcs11/opensc-pkcs11.so";
-
+  environment.variables.PKCS11_WHITELIST="${pkgs.opensc}/*";
 
   hardware.cpu.intel.updateMicrocode = true;
   networking.hostName = "erika";
