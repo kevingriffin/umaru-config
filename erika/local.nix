@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ../overlays.nix
-    ../eikaiwa-servers.nix
+    ../packages/eikaiwa-servers.nix
+    ../packages/ruby-development.nix
    ];
 
   boot.loader.systemd-boot.enable = true;
@@ -28,6 +28,8 @@
 
   boot.kernelParams = [ "nomodeset" ];
 
+  hardware.cpu.intel.updateMicrocode = true;
+
   environment.systemPackages = with pkgs; [
      eikaiwa-packages
      seeing_is_believing
@@ -38,7 +40,6 @@
   environment.variables.OPENSC="${pkgs.opensc}/lib/pkcs11/opensc-pkcs11.so";
   environment.variables.PKCS11_WHITELIST="${pkgs.opensc}/*";
 
-  hardware.cpu.intel.updateMicrocode = true;
   networking.hostName = "erika";
   networking.hostId = "a5621c46";
   services.pcscd.enable = true;

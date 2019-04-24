@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ../overlays.nix
-    ../eikaiwa-servers.nix
+    ../packages/eikaiwa-servers.nix
+    ../packages/ruby-development.nix
    ];
 
   boot.loader.grub.device = "/dev/vda";
@@ -11,8 +11,6 @@
   nix.buildCores = 2;
 
   environment.systemPackages = with pkgs; [
-     eikaiwa-packages
-     seeing_is_believing
      socat
   ];
 
@@ -31,16 +29,16 @@
   networking.firewall.allowedTCPPorts = [ 80 443 32400 ];
 
   services.nginx = {
-  enable = true;
-  recommendedProxySettings = true;
-  virtualHosts."tomoyo.kevin.jp" = {
-    enableACME = true;
-    forceSSL = true;
-    locations."/" = {
-      proxyPass = "http://localhost:3000";
+    enable = true;
+    recommendedProxySettings = true;
+    virtualHosts."tomoyo.kevin.jp" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:3000";
+      };
     };
   };
-};
 
   users.users.git = {
     isNormalUser = true;

@@ -15,13 +15,13 @@ let
   bundler = webpkgs.bundler;
 in
 
-buildEnv {
-  name = "eikaiwa-packages";
-  paths = [
-    nodejs
-    yarn
-    overmind
-    ruby_2_5
-    bundler
-  ];
+  buildEnv {
+    name = "eikaiwa-packages";
+    paths = [
+      nodejs
+      yarn
+      overmind
+      ruby_2_5
+      bundler
+    ];
 }

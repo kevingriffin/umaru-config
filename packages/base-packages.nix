@@ -1,0 +1,33 @@
+{ config, pkgs, ... }:
+
+{
+   environment.systemPackages = with pkgs; [
+     _1password
+     ag
+     bind
+     colordiff
+     direnv
+     fzf
+     gitAndTools.diff-so-fancy
+     gitAndTools.hub
+     gitFull
+     gnumake
+     httpie
+     httpie
+     irssi
+     jq
+     lsof
+     neovim
+     nmap
+     opensc
+     rsync
+     tcpdump
+     tig
+     tmux
+     tree
+     wget
+     wireshark
+     youtube-dl
+     yubikey-manager
+   ];
+}
