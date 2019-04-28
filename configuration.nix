@@ -42,9 +42,10 @@ in
   # Use neovim as default editor
   environment.variables.EDITOR = "nvim";
 
-  programs.mtr.enable  = true;
-  programs.mosh.enable = true;
-  programs.fish.enable = true;
+  programs.mtr.enable     = true;
+  programs.mosh.enable    = true;
+  programs.fish.enable    = true;
+  programs.ssh.startAgent = true;
   # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
 
   # Enable the OpenSSH daemon.
