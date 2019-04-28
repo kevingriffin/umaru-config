@@ -1,5 +1,8 @@
 { config, pkgs, ... }:
 
+let
+  unstablePkgs = import<nixpkgs-unstable> {};
+in
 {
    environment.systemPackages = with pkgs; [
      _1password
@@ -27,7 +30,7 @@
      tree
      wget
      wireshark
-     youtube-dl
+     unstablePkgs.youtube-dl
      yubikey-manager
    ];
 }
