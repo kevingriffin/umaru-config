@@ -37,8 +37,13 @@
      opensc
   ];
 
-  environment.variables.OPENSC="${pkgs.opensc}/lib/pkcs11/opensc-pkcs11.so";
-  environment.variables.PKCS11_WHITELIST="${pkgs.opensc}/*";
+  system.activationScripts.userActivationScripts =
+          ''
+            mkdir -p /usr/lib
+            cp ${pkgs.opensc}/lib/opensc-pkcs11.so /usr/lib
+          '';
+
+  environment.variables.OPENSC="/usr/lib/opensc-pkcs11.so";
 
   networking.hostName = "erika";
   networking.hostId = "a5621c46";
