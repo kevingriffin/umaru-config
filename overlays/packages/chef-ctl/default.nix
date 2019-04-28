@@ -21,7 +21,7 @@ let
 
   src = builtins.fetchGit {
     url = "git@github.com:iknow/chef-ctl";
-    ref = "91cbe4500d4a8afbdd830fbded8e28fca22ee542";
+    rev = "934cb5fc1828cd0697ccfa627efa7b27e721f750";
   };
 in
 
