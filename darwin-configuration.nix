@@ -1,5 +1,8 @@
 { config, pkgs, options, ... }:
 
+let
+  unstablePkgs = import<nixpkgs-unstable> {};
+in
 {
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -49,5 +52,9 @@
     "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs" # NixOS/nix#1865
   ] ++ options.nix.nixPath.default;
 
-  nixpkgs.config = import ./config.nix;
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowUnsupportedSystem = false;
+  };
+
 }
