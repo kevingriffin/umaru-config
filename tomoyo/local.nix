@@ -12,6 +12,9 @@
 
   environment.systemPackages = with pkgs; [
      socat
+     iknow-devops
+     iknow-devops-legacy
+     phraseapp_updater
   ];
 
   systemd.services.socat-proxy = {
