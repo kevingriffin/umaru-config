@@ -31,6 +31,7 @@ in
      wget
      wireshark
      unstablePkgs.youtube-dl
+     unzip
      yubikey-manager
    ];
 }
