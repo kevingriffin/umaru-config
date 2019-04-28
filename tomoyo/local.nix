@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ../packages/eikaiwa-servers.nix
-    ../packages/ruby-development.nix
+    ../modules/eikaiwa-servers.nix
+    ../modules/ruby-development.nix
    ];
 
   boot.loader.grub.device = "/dev/vda";

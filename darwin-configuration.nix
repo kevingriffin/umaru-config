@@ -8,7 +8,7 @@ in
   # $ nix-env -qaP | grep wget
 
   imports = [
-    ./packages/base-packages.nix
+    ./modules/base-packages.nix
     ./darwin-modules
     ./local.nix
   ];

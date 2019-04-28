@@ -10,7 +10,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
-    ./packages/base-packages.nix
+    ./modules/base-packages.nix
     ./local.nix
   ];
 

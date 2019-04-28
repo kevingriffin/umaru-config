@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../packages/ruby-development.nix
+    ../modules/ruby-development.nix
   ];
 
   # You should generally set this to the total number of logical cores in your system.
