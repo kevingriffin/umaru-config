@@ -39,12 +39,6 @@ in
   # $ darwin-rebuild changelog
   system.stateVersion = 3;
 
-  # Link opensc library to location trusted by macOS ssh
-  system.activationScripts.extraActivation.text = ''
-    mkdir -p /usr/local/lib
-    cp ${pkgs.opensc}/lib/opensc-pkcs11.so /usr/local/lib
-  '';
-
 
   nix.distributedBuilds = true;
 

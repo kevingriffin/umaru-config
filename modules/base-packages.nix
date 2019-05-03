@@ -23,7 +23,6 @@ in
      lsof
      neovim
      nmap
-     opensc
      rsync
      tcpdump
      tig
