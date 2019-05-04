@@ -1,14 +1,17 @@
 { config, pkgs, environment, ... }:
 
 {
-  imports = [
-    ../modules/eikaiwa-servers.nix
-    ../modules/ruby-development.nix
-   ];
-
+  boot.loader.grub.enable = true;
+  boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/vda";
   networking.hostName = "tomoyo";
   nix.buildCores = 2;
+
+  boot.initrd.luks.devices = [{
+    name = "rootdev";
+    device = "/dev/vda2";
+    preLVM = true;
+  }];
 
   environment.systemPackages = with pkgs; [
      socat
