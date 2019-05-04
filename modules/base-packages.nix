@@ -15,7 +15,6 @@ in
      gitAndTools.hub
      gitFull
      gnumake
-     gnupg
      httpie
      httpie
      irssi
