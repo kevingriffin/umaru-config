@@ -50,5 +50,10 @@
   networking.hostId = "a5621c46";
   services.pcscd.enable = true;
 
+  system.autoUpgrade = {
+    enable = true;
+  };
+
+
   nix.buildCores = 8;
 }
