@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
     else if stdenv.hostPlatform.system == "x86_64-linux" then
       fetchzip {
         url = "https://cache.agilebits.com/dist/1P/op/pkg/v${version}/op_linux_amd64_v${version}.zip";
-        sha256 = "1jh1sk07k3whbr0rvc4kf221wskcdbk0zpxaj49qbwq1d89cjnpg";
+        sha256 = "1svic2b2msbwzfx3qxfglxp0jjzy3p3v78273wab942zh822ld8b";
         stripRoot = false;
       }
     else if stdenv.hostPlatform.system == "x86_64-darwin" then
