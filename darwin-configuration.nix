@@ -39,6 +39,10 @@ in
   # $ darwin-rebuild changelog
   system.stateVersion = 3;
 
+  services.openssh = {
+    passwordAuthentication = false;
+    challengeResponseAuthentication = false;
+  };
 
   nix.distributedBuilds = true;
 
