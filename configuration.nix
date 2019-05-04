@@ -36,7 +36,6 @@ in
     borgbackup
     gnupg
     traceroute
-    usbutils
   ];
 
   # Use neovim as default editor
