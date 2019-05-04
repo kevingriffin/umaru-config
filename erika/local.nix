@@ -4,6 +4,7 @@
   imports = [
     ../modules/eikaiwa-servers.nix
     ../modules/ruby-development.nix
+    ../modules/swift.nix
    ];
 
   boot.loader.systemd-boot.enable = true;
