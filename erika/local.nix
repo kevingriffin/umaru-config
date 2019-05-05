@@ -13,6 +13,49 @@
   boot.loader.grub.device = "nodev";
 
 
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
+
+  services.nginx = {
+    enable = true;
+    recommendedProxySettings = true;
+    virtualHosts."erika.kevin.jp" = {
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:3000";
+        proxyWebsockets = true;
+      };
+      sslCertificate = "/etc/nginx/letsencrypt/live/erika.kevin.jp/fullchain.pem";
+      sslCertificateKey = "/etc/nginx/letsencrypt/live/erika.kevin.jp/privkey.pem";
+    };
+    virtualHosts."erika.local.kevin.jp" = {
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:3000";
+        proxyWebsockets = true;
+      };
+      sslCertificate = "/etc/nginx/letsencrypt/live/erika.local.kevin.jp/fullchain.pem";
+      sslCertificateKey = "/etc/nginx/letsencrypt/live/erika.local.kevin.jp/privkey.pem";
+    };
+    virtualHosts."erika.vm.kevin.jp" = {
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:3000";
+        proxyWebsockets = true;
+      };
+      sslCertificate = "/etc/nginx/letsencrypt/live/erika.vm.kevin.jp/fullchain.pem";
+      sslCertificateKey = "/etc/nginx/letsencrypt/live/erika.vm.kevin.jp/privkey.pem";
+    };
+    virtualHosts."erika.vm.local.kevin.jp" = {
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:3000";
+        proxyWebsockets = true;
+      };
+      sslCertificate = "/etc/nginx/letsencrypt/live/erika.vm.local.kevin.jp/fullchain.pem";
+      sslCertificateKey = "/etc/nginx/letsencrypt/live/erika.vm.local.kevin.jp/privkey.pem";
+    };
+  };
+
   boot.initrd.luks.devices = [
     {
       name = "root1";
