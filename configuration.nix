@@ -34,7 +34,6 @@ in
 
   environment.systemPackages = with pkgs; [
     borgbackup
-    unstablePkgs.certbot
     gnupg
     traceroute
     usbutils

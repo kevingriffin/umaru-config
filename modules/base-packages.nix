@@ -8,6 +8,7 @@ in
      _1password
      ag
      bind
+     unstablePkgs.certbot
      colordiff
      direnv
      fzf
