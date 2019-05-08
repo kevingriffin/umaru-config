@@ -4,7 +4,7 @@
 let
   cfg = config.lorne.eikaiwa-env;
 
-  checkout_dir = "/Users/chris/workspace/eikaiwa_content_frontend";
+  checkout_dir = "/Users/kevin/code/eikaiwa_content_frontend";
 
   esPlugin = with pkgs; a@{
     pluginName,
