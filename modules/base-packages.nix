@@ -24,14 +24,15 @@ in
      neovim
      nmap
      rsync
+     sshpass
      tcpdump
      tig
      tmux
      tree
+     unzip
      wget
      wireshark
      unstablePkgs.youtube-dl
-     unzip
      yubikey-manager
    ];
 }
