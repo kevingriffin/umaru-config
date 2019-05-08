@@ -7,5 +7,6 @@
     ./elasticsearch.nix
     ./direnv.nix
     ./openssh.nix
+    ./ids.nix
   ];
 }
