@@ -21,9 +21,9 @@ in
   services.nix-daemon.enable = true;
   nix.package = pkgs.nix;
 
-  # Create /etc/bashrc that loads the nix-darwin environment.
-  programs.bash.enable = true;
+  # Make sure fish is $SHELL
   programs.fish.enable = true;
+  programs.bash.enable = false;
 
   nixpkgs.overlays = [
     (import ./overlays/packages.nix)
