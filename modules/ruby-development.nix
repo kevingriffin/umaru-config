@@ -7,6 +7,8 @@
     ruby
     seeing_is_believing
     rubocop
+    direnv
+    lorri
   ];
 
 }
