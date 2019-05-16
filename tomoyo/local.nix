@@ -1,6 +1,10 @@
 { config, pkgs, environment, ... }:
 
 {
+  imports = [
+    ../modules/vpn.nix
+   ];
+
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/vda";
@@ -33,6 +37,12 @@
   };
 
   networking.firewall.allowedTCPPorts = [ 80 443 32400 ];
+
+  kevin.iknow-vpn = {
+    enable = true;
+    ips    = [ "192.168.1.165/32" ];
+  };
+
 
   services.nginx = {
     enable = true;

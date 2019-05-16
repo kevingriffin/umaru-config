@@ -81,6 +81,12 @@
      opensc
   ];
 
+
+  kevin.iknow-vpn = {
+    enable = true;
+    ips    = [ "192.168.1.165/32" ];
+  };
+
   system.activationScripts.userActivationScripts =
           ''
             mkdir -p /usr/lib
