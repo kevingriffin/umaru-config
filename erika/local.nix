@@ -5,6 +5,7 @@
     ../modules/eikaiwa-servers.nix
     ../modules/ruby-development.nix
     ../modules/swift.nix
+    ../modules/vpn.nix
    ];
 
   boot.loader.systemd-boot.enable = true;
@@ -84,7 +85,7 @@
 
   kevin.iknow-vpn = {
     enable = true;
-    ips    = [ "192.168.1.165/32" ];
+    ips    = [ "192.168.1.169/32" ];
   };
 
   system.activationScripts.userActivationScripts =
