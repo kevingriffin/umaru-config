@@ -4,6 +4,8 @@
   imports = [
     ../modules/vpn.nix
     ../modules/wireguard-host.nix
+    ../modules/grafana.nix
+    ../modules/prometheus.nix
    ];
 
   boot.loader.grub.enable = true;
