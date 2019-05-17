@@ -3,7 +3,6 @@
 {
   imports = [
     ../modules/vpn.nix
-    ../modules/wireguard-host.nix
     ../modules/grafana.nix
     ../modules/prometheus.nix
    ];
@@ -44,8 +43,25 @@
   kevin.iknow-vpn = {
     enable = true;
     ips    = [ "192.168.1.165/32" ];
+    allowedIPs  = [ "0.0.0.0/0" ];
   };
 
+  kevin.vpn-host = {
+    enable = true;
+    prefix = "2001:19f0:7001:4b5d";
+    v4Base = "192.168.2";
+    port = 52337;
+    upstreamIfname = "ens3";
+
+    # TODO Make this load peers from a file?
+    # git repository of my public keys for wireguard and ssh and gpg
+    peers = {
+      "chieri" = { ordinal = 2; publicKey = "Oo9fzy6JAuvG9S1qR2ACVbUjKxPLQFsHqg4uDGQQHTY="; };
+      "alpha"  = { ordinal = 3; publicKey = "erWAQdCkqatIRy1+01mhBWPg8KApwVrzNxuRGeMGvwE="; };
+      "umaru"  = { ordinal = 4; publicKey = "h/trC+5Z8qbGBJtroYITQGMNUn5XQZ/JRqVR3iIH5Ro="; };
+      "erika"  = { ordinal = 5; publicKey = "PBy+Msv2RZSSH9UodBa1JJ5ZsuER7rXinuW2QkzemAE="; };
+    };
+  };
 
   services.nginx = {
     enable = true;
