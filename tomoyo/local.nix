@@ -3,6 +3,7 @@
 {
   imports = [
     ../modules/vpn.nix
+    ../modules/wireguard-host.nix
    ];
 
   boot.loader.grub.enable = true;
