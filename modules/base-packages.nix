@@ -16,6 +16,7 @@ in
      gitAndTools.hub
      gitFull
      gnumake
+     htop
      httpie
      httpie
      irssi
