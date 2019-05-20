@@ -133,7 +133,7 @@ in
         type = vpnSubmodule;
         default = {};
       };
-      home-vpn = mkOption {
+      tomoyo-vpn = mkOption {
         type = vpnSubmodule;
         default = {};
       };
@@ -153,12 +153,12 @@ in
       inherit (kevin-cfg.iknow-vpn) ips allowedIPs;
     }))
 
-    (mkIf kevin-cfg.home-vpn.enable (sharedClientConfig {
-      name = "home";
+    (mkIf kevin-cfg.tomoyo-vpn.enable (sharedClientConfig {
+      name = "tomoyo";
       interface = "wg1";
-      publicKey = "T3w2pRLJTKArHLxA4uGgG07XHv4JkGBCrilnXkpNGTs=";
-      endpoint = "111.108.92.242:52336";
-      inherit (kevin-cfg.home-vpn) ips allowedIPs;
+      publicKey = "h+lBOnF+dvUEmNRfBQ22F5mZpYN27i6VBcjcNk6fdAE=";
+      endpoint = "202.182.98.97:52337";
+      inherit (kevin-cfg.tomoyo-vpn) ips allowedIPs;
     }))
 
     (mkIf kevin-cfg.vpn-host.enable (sharedHostConfig {

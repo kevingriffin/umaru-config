@@ -83,10 +83,19 @@
   ];
 
 
+
   kevin.iknow-vpn = {
     enable = true;
     ips    = [ "192.168.1.169/32" ];
+    allowedIPs  = [ "0.0.0.0/0" ];
   };
+
+  kevin.tomoyo-vpn = {
+    enable     = true;
+    ips    = [ "192.168.2.5/32" ];
+    allowedIPs  = [ "0.0.0.0/0" "::/0" ];
+  };
+
 
   system.activationScripts.userActivationScripts =
           ''
