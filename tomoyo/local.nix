@@ -49,10 +49,11 @@
 
   kevin.vpn-host = {
     enable = true;
-    prefix = "2001:19f0:7001:4b5d";
+    prefix = "2001:19f0:7001:4b5d:1000";
+    prefixLength = 68;
     v4Base = "192.168.2";
     port = 52337;
-    upstreamIfname = "ens3";
+    upstreamIfname = "eth0";
 
     # TODO Make this load peers from a file?
     # git repository of my public keys for wireguard and ssh and gpg

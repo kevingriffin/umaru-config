@@ -18,6 +18,7 @@ let
       enable         = mkEnableOption "VPN Host";
       v4Base         = mkOption { type = str; };
       prefix         = mkOption { type = str; };
+      prefixLength   = mkOption { type = int; };
       port           = mkOption { type = int; };
       upstreamIfname = mkOption { type = str; };
       peers          = mkOption { type = attrs; };
@@ -46,11 +47,11 @@ let
     };
   };
 
-  sharedHostConfig = { v4Base, prefix, port, upstreamIfname, peers} : {
+  sharedHostConfig = { v4Base, prefix, prefixLength, port, upstreamIfname, peers} : {
       networking.wireguard.interfaces = {
         wg4 = {
           # TODO Make nat optional
-          ips = [ (wireguard4Addr v4Base 1) ];
+          ips = [ (wireguard4Addr v4Base 1) "${prefix}::1/${toString prefixLength}" ];
           listenPort = port;
           privateKeyFile = "/etc/nixos/wireguard-private-key";
 
@@ -62,15 +63,22 @@ let
             ];
           }) peers;
 
-          postSetup = ''
+          postSetup = (lib.concatStrings (lib.mapAttrsToList (n: { ordinal, ...}: ''
+            ${pkgs.iproute}/bin/ip -6 neigh add proxy ${prefix}::${toString ordinal} dev ${upstreamIfname}
+      '') peers)) + ''
             ${pkgs.iproute}/bin/ip link set wg4 mtu ${toString (1420 - 20)}
           '';
+
+          postShutdown = lib.concatStrings (lib.mapAttrsToList (n: { ordinal, ... }: ''
+            ${pkgs.iproute}/bin/ip -6 neigh del proxy ${prefix}::${toString ordinal} dev ${upstreamIfname}
+          '') peers);
         };
       };
 
       boot.kernel.sysctl = {
         "net.ipv4.conf.all.forwarding" = 1;
         "net.ipv6.conf.all.forwarding" = 1;
+        "net.ipv6.conf.all.proxy_ndp" = 1;
       };
 
       # TODO Optional ARP forwarding
@@ -154,7 +162,7 @@ in
     }))
 
     (mkIf kevin-cfg.vpn-host.enable (sharedHostConfig {
-      inherit (kevin-cfg.vpn-host) v4Base prefix port upstreamIfname peers;
+      inherit (kevin-cfg.vpn-host) v4Base prefix prefixLength port upstreamIfname peers;
     })
     )
   ];
