@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../modules/preboot-ssh.nix
     ../modules/vpn.nix
     ../modules/grafana.nix
     ../modules/prometheus.nix
