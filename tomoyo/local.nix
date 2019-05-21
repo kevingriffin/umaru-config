@@ -41,6 +41,11 @@
 
   networking.firewall.allowedTCPPorts = [ 80 443 32400 ];
 
+  kevin.preboot-ssh = {
+    enable = true;
+    identityFile = "/home/kevin/identities/ssh.json";
+  };
+
   kevin.iknow-vpn = {
     enable = true;
     ips    = [ "192.168.1.165/32" ];
