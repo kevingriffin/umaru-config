@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../modules/preboot-ssh.nix
     ../modules/eikaiwa-servers.nix
     ../modules/ruby-development.nix
     ../modules/swift.nix
@@ -72,6 +73,11 @@
 
 
   boot.kernelParams = [ "nomodeset" ];
+
+  kevin.preboot-ssh = {
+    enable = true;
+    identityFile = "/home/kevin/identities/ssh.json";
+  };
 
   hardware.cpu.intel.updateMicrocode = true;
 

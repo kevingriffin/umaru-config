@@ -26,7 +26,7 @@ in
 
   config = lib.mkIf kevin-cfg.preboot-ssh.enable {
     boot.initrd = {
-      availableKernelModules = [ "vmxnet3" "virtio_pci" ];
+      availableKernelModules = [ "vmxnet3" "virtio_pci" "e1000" ];
 
       network.enable = true;
 
