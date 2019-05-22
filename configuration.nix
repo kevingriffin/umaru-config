@@ -36,6 +36,7 @@ in
     borgbackup
     gnupg
     traceroute
+    sshfs
   ];
 
   # Use neovim as default editor
