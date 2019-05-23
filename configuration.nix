@@ -46,7 +46,10 @@ in
   programs.mosh.enable    = true;
   programs.fish.enable    = true;
   programs.ssh.startAgent = true;
-  # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = false;
+  };
 
   # Enable the OpenSSH daemon.
   services.openssh = {
