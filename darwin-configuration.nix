@@ -24,6 +24,10 @@ in
   # Make sure fish is $SHELL
   programs.fish.enable = true;
   programs.bash.enable = false;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = false;
+  };
 
   nixpkgs.overlays = [
     (import ./overlays/packages.nix)
@@ -37,6 +41,10 @@ in
 
   # Use neovim as default editor
   environment.variables.EDITOR = "nvim";
+
+  # Make gpg always request password at terminal
+  environment.variables.PINENTRY_USER_DATA = "USE_CURSES=1";
+
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

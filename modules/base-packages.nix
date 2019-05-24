@@ -16,6 +16,7 @@ in
      gitAndTools.hub
      gitFull
      gnumake
+     gnupg
      htop
      httpie
      httpie
