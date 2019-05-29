@@ -83,6 +83,7 @@
 
   environment.systemPackages = with pkgs; [
      eikaiwa-packages
+     phraseapp_updater
      seeing_is_believing
      yubikey-manager
      opensc
