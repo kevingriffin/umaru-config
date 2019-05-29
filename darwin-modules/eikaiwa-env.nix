@@ -63,9 +63,9 @@ in
 
       postgresql = {
         enable = true;
-        package = pkgs.postgresql_10;
+        package = pkgs.postgresql_11;
         enableTCPIP = true;
-        dataDir = "/usr/local/var/postgres10";
+        dataDir = "/usr/local/var/postgres11";
         extraConfig = ''
           fsync = off
           synchronous_commit = off
