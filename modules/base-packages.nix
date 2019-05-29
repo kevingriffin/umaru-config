@@ -33,6 +33,7 @@ in
      tree
      unzip
      wget
+     weechat
      wireshark
      unstablePkgs.youtube-dl
      yubikey-manager
