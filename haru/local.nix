@@ -10,8 +10,5 @@
   nix.maxJobs = 4;
   nix.buildCores = 3;
 
-  services.prometheus.exporters.node = {
-    enable = true;
-    openFirewall = true;
-  };
+  services.prometheus.exporters.node.enable = true;
 }

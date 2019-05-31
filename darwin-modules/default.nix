@@ -8,5 +8,6 @@
     ./direnv.nix
     ./openssh.nix
     ./ids.nix
+    ./node-exporter.nix
   ];
 }

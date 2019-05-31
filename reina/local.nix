@@ -20,10 +20,7 @@
     };
   };
 
-  services.prometheus.exporters.node = {
-    enable = true;
-    openFirewall = true;
-  };
+  services.prometheus.exporters.node.enable = true;
 
   # You should generally set this to the total number of logical cores in your system.
   # $ sysctl -n hw.ncpu
