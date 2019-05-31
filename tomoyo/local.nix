@@ -84,6 +84,13 @@
       locations."/" = {
         proxyPass = "http://localhost:3000";
       };
+      locations."/prometheus" = {
+        proxyPass = "http://localhost:9090";
+        extraConfig = ''
+          auth_basic           "Prometheus";
+          auth_basic_user_file /etc/nixos/.htpasswd;
+          '';
+      };
     };
   };
 
