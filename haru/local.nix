@@ -9,4 +9,9 @@
   # $ sysctl -n hw.ncpu
   nix.maxJobs = 4;
   nix.buildCores = 3;
+
+  services.prometheus.exporters.node = {
+    enable = true;
+    openFirewall = true;
+  };
 }

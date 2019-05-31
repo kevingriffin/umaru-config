@@ -41,6 +41,11 @@
 
   networking.firewall.allowedTCPPorts = [ 80 443 32400 ];
 
+  services.prometheus.exporters.node = {
+    enable = true;
+    openFirewall = false;
+  };
+
   kevin.preboot-ssh = {
     enable = true;
     identityFile = "/home/kevin/identities/ssh.json";

@@ -19,10 +19,10 @@
         static_configs = [{
           targets = [
             "localhost:9100"
-            "files.dmm.iknow.jp:9100"
-            "leeroy.dmm.iknow.jp:9100"
-            "monitor-panel.dmm.iknow.jp:9100"
-            "tourou.cons.org.nz:9100"
+            "erika.vm.kevin.jp:9100"
+            "umaru.kevin.jp:9100"
+            "haru.kevin.jp:9100"
+            "reina.kevin.jp:9100"
           ];
         }];
       }

@@ -89,6 +89,10 @@
   ];
 
 
+  services.prometheus.exporters.node = {
+    enable = true;
+    openFirewall = true;
+  };
 
   kevin.iknow-vpn = {
     enable = true;
