@@ -4,7 +4,6 @@
   imports = [
     ../modules/preboot-ssh.nix
     ../modules/vpn.nix
-    ../modules/grafana.nix
     ../modules/prometheus.nix
    ];
 
@@ -75,6 +74,16 @@
     };
   };
 
+
+  services.grafana = {
+    enable = true;
+    port = 4000;
+    addr = "[::]";
+    domain = "tomoyo.kevin.jp";
+    rootUrl = "https://tomoyo.kevin.jp/grafana";
+    auth.anonymous.enable = false;
+  };
+
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
@@ -89,6 +98,12 @@
         extraConfig = ''
           auth_basic           "Prometheus";
           auth_basic_user_file /etc/nixos/.htpasswd;
+          '';
+      };
+      locations."/grafana" = {
+        proxyPass = "http://localhost:4000";
+        extraConfig = ''
+          rewrite  ^/grafana/(.*)  /$1 break;
           '';
       };
     };
