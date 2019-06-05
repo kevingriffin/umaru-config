@@ -9,6 +9,7 @@ in
 
   imports = [
     ./modules/base-packages.nix
+    ./darwin-modules/eikaiwa-env.nix
     ./darwin-modules
     ./local.nix
   ];

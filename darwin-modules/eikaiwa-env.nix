@@ -1,12 +1,14 @@
 # This module only tested against nix-darwin
 { config, lib, pkgs, ... }:
 
+with pkgs;
+
 let
   cfg = config.lorne.eikaiwa-env;
 
   checkout_dir = "/Users/kevin/code/eikaiwa_content_frontend";
 
-  esPlugin = with pkgs; a@{
+  esPlugin = a@{
     pluginName,
     installPhase ? ''
       mkdir -p $out/config
@@ -26,21 +28,27 @@ let
   });
 
   analysis_smartcn = esPlugin rec {
-    name = "analysis-smartcn-5.6.9";
+    name = "analysis-smartcn-${elk5Version}";
     pluginName = "analysis-smartcn";
-    src = pkgs.fetchurl {
-      url = "https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-smartcn/analysis-smartcn-5.6.9.zip";
-      sha256 = "1y4i9b8zxx26fjixcc7b82sxizl5hgvyqwzilgcb4cfnkap7dx8j";
+    src = fetchurl {
+      url = "https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-smartcn/analysis-smartcn-${elk5Version}.zip";
+      sha256 = {
+        "5.6.9" = "1y4i9b8zxx26fjixcc7b82sxizl5hgvyqwzilgcb4cfnkap7dx8j";
+        "5.6.16" = "1miijfslvj5cjb34221pky7xw6chhgbfcn48vhn3g0jfr6kcx824";
+      }."${elk5Version}";
     };
     meta = {};
   };
 
   analysis_kuromoji = esPlugin rec {
-    name = "analysis-kuromoji-5.6.9";
+    name = "analysis-kuromoji-${elk5Version}";
     pluginName = "analysis-kuromoji";
-    src = pkgs.fetchurl {
-      url = "https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-kuromoji/analysis-kuromoji-5.6.9.zip";
-      sha256 = "1avwn7y80l7pajxgxa1sb66r6h2cswbls9ygml2w7090wad8b3aa";
+    src = fetchurl {
+      url = "https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-kuromoji/analysis-kuromoji-${elk5Version}.zip";
+      sha256 = {
+        "5.6.9" = "1avwn7y80l7pajxgxa1sb66r6h2cswbls9ygml2w7090wad8b3aa";
+        "5.6.16" = "0hyv856ivzrw4gzsqp55a9h2xxcnsq2l00g954r2dcx38nv69ny7";
+      }."${elk5Version}";
     };
     meta = {};
   };
