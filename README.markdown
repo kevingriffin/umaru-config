@@ -1,4 +1,4 @@
 Readme
 ===
 
-Configuration for nixOS.
+My configuration for nix.
