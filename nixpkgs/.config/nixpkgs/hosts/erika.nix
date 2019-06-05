@@ -12,6 +12,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = ["zfs"];
+  boot.zfs.enableUnstable = true;
   boot.loader.grub.device = "nodev";
 
 
