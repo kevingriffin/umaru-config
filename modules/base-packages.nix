@@ -19,14 +19,15 @@ in
      gnupg
      htop
      httpie
-     httpie
      irssi
      jq
      lsof
      neovim
      nmap
+     ripgrep
      rsync
      sshpass
+     stow
      tcpdump
      tig
      tmux
