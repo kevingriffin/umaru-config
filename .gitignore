@@ -1,3 +1,4 @@
 /nixpkgs/.config/nixpkgs/local.nix
 /nixpkgs/.config/nixpkgs/hardware-configuration.nix
+/nixpkgs/.config/nixpkgs/secrets.nix
 

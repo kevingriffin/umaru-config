@@ -12,6 +12,7 @@ in
     ./hardware-configuration.nix
     ./modules/base-packages.nix
     ./local.nix
+    ./secrets.nix
   ];
 
   boot.cleanTmpDir = true;
