@@ -27,6 +27,7 @@ in
      overmind
      ripgrep
      rsync
+     speedtest-cli
      sshpass
      stow
      tcpdump
