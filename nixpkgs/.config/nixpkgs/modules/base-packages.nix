@@ -24,6 +24,7 @@ in
      lsof
      neovim
      nmap
+     overmind
      ripgrep
      rsync
      sshpass
