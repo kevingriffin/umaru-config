@@ -23,7 +23,17 @@ in
   nix.package = pkgs.nix;
 
   # Make sure fish is $SHELL
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+        source (fzf-share)/key-bindings.fish
+    '';
+  };
+  # Set up fzf to go through hidden files
+  # and use a fast rg backend
+  environment.variables.FZF_DEFAULT_COMMAND = "rg --files --hidden -g='!.git'";
+  environment.variables.FZF_CTRL_T_COMMAND  = "rg --files --hidden -g='!.git'";
+
   programs.bash.enable = false;
   programs.gnupg.agent = {
     enable = true;
