@@ -1,0 +1,19 @@
+commit a9a517637a8874ed1dbac1b6c3ff54ba8d3697de
+Author: Chris Andreae <chris@andreae.nz>
+Date:   Tue Jun 18 00:37:52 2019 +0900
+
+    Build with nix
+
+diff --git a/Makefile b/Makefile
+index 00ca22b..caa2ee4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -6,7 +6,7 @@ endif
+ 
+ PREFIX  ?= /usr/local
+ CXX     ?= g++
+-GZIP    ?= /bin/gzip
++GZIP    ?= gzip
+ MANDIR  ?= ${DESTDIR}${PREFIX}/share/man
+ SBINDIR ?= ${DESTDIR}${PREFIX}/sbin
+ PKG_CONFIG ?= pkg-config

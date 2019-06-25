@@ -14,6 +14,7 @@ self: super: {
   cfn-lint = self.python2.pkgs.callPackage ./packages/cfn-lint.nix {};
   cfn_flip = self.python2.pkgs.callPackage ./packages/cfn_flip.nix {};
   kube-ps1 = super.callPackage ./packages/kube-ps1.nix {};
+  ndppd = super.callPackage ./packages/ndppd {};
   lorri = let
     src = builtins.fetchGit {
       url = "https://github.com/target/lorri";
