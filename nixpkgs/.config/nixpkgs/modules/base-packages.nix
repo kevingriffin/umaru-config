@@ -39,6 +39,7 @@ in
      weechat
      wireshark
      unstablePkgs.youtube-dl
+     yank
      yubikey-manager
    ];
 }
