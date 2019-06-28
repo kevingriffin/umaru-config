@@ -71,6 +71,7 @@
       "alpha"  = { ordinal = 3; publicKey = "erWAQdCkqatIRy1+01mhBWPg8KApwVrzNxuRGeMGvwE="; };
       "umaru"  = { ordinal = 4; publicKey = "h/trC+5Z8qbGBJtroYITQGMNUn5XQZ/JRqVR3iIH5Ro="; };
       "erika"  = { ordinal = 5; publicKey = "PBy+Msv2RZSSH9UodBa1JJ5ZsuER7rXinuW2QkzemAE="; };
+      "haru"   = { ordinal = 6; publicKey = "fLyslIOYAC5kPCrolf/2yqlIQR3vDltnFiM+H6Kk00g="; };
     };
   };
 
