@@ -22,6 +22,7 @@ in
      irssi
      jq
      lsof
+     mosh
      neovim
      nmap
      overmind
@@ -33,6 +34,7 @@ in
      tcpdump
      tig
      tmux
+     tmux-cssh
      tree
      unzip
      wget
