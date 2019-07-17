@@ -6,8 +6,6 @@ with pkgs;
 let
   cfg = config.lorne.eikaiwa-env;
 
-  checkout_dir = "/Users/kevin/code/eikaiwa_content_frontend";
-
   esPlugin = a@{
     pluginName,
     installPhase ? ''
@@ -98,17 +96,6 @@ in
             '';
           }}"
         ];
-      };
-
-      nginx = {
-        enable = true;
-        virtualHosts.default = {
-          default = true;
-          forceSSL = true;
-          globalRedirect = "localhost.devdomain.name:3000";
-          sslCertificate = "${checkout_dir}/config/dev-cert.pem";
-          sslCertificateKey = "${checkout_dir}/config/dev-key.pem";
-        };
       };
 
       # kibana
