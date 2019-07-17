@@ -26,19 +26,7 @@
      phraseapp_updater
   ];
 
-  systemd.services.socat-proxy = {
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
-    description = "Start a proxy for Plex from iPv4 to iPv6";
-    serviceConfig = {
-      Type = "simple";
-      User = "root";
-      Restart = "on-failure";
-      ExecStart = ''${pkgs.socat}/bin/socat -dF TCP-LISTEN:32400,fork, TCP6:umaru.kevin.jp:32400'';
-    };
-  };
-
-  networking.firewall.allowedTCPPorts = [ 80 443 32400 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   services.prometheus.exporters.node = {
     enable = true;
