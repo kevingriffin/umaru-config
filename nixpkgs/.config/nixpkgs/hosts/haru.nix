@@ -8,14 +8,23 @@
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
+    virtualHosts."haru.kevin.jp" = {
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:3000";
+        proxyWebsockets = true;
+      };
+      sslCertificate = "/etc/nginx/lego/certificates/haru.kevin.jp.crt";
+      sslCertificateKey = "/etc/nginx/lego/certificates/haru.kevin.jp.key";
+    };
     virtualHosts."haru.local.kevin.jp" = {
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://localhost:3000";
         proxyWebsockets = true;
       };
-      sslCertificate = "/etc/nginx/letsencrypt/live/haru.local.kevin.jp/fullchain.pem";
-      sslCertificateKey = "/etc/nginx/letsencrypt/live/haru.local.kevin.jp/privkey.pem";
+      sslCertificate = "/etc/nginx/lego/certificates/haru.local.kevin.jp.crt";
+      sslCertificateKey = "/etc/nginx/lego/certificates/haru.local.kevin.jp.key";
     };
   };
 
