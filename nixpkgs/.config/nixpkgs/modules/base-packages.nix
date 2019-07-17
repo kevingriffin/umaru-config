@@ -21,6 +21,7 @@ in
      httpie
      irssi
      jq
+     lego
      lsof
      mosh
      neovim
