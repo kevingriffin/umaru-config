@@ -15,8 +15,8 @@
         proxyPass = "http://localhost:3000";
         proxyWebsockets = true;
       };
-      sslCertificate = "/etc/nginx/letsencrypt/live/reina.local.kevin.jp/fullchain.pem";
-      sslCertificateKey = "/etc/nginx/letsencrypt/live/reina.local.kevin.jp/privkey.pem";
+      sslCertificate = "/etc/nginx/lego/certificates/reina.local.kevin.jp.crt";
+      sslCertificateKey = "/etc/nginx/lego/certificates/reina.local.kevin.jp.key";
     };
   };
 
