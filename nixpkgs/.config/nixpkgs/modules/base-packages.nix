@@ -22,8 +22,8 @@ in
      jq
      lego
      lsof
+     nightly-neovim
      mosh
-     neovim
      nmap
      overmind
      ripgrep

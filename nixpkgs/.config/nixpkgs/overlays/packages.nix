@@ -20,4 +20,7 @@ self: super: {
       ref = "rolling-release";
       };
       in import src { inherit src; };
+  nightly-neovim = let
+    pinned-nixpkgs = fetchTarball { url = https://github.com/NixOS/nixpkgs/archive/19.09.tar.gz; };
+    in (import pinned-nixpkgs {}).neovim;
 }
