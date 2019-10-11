@@ -360,7 +360,7 @@ in
       preStart =  mkOption {
         type = types.lines;
         default = ''
-          test -d ${cfg.stateDir}/logs || mkdir -m 750 -p ${cfg.stateDir}/logs  
+          test -d ${cfg.stateDir}/logs || mkdir -m 750 -p ${cfg.stateDir}/logs
           test `stat -c %a ${cfg.stateDir}` = "750" || chmod 750 ${cfg.stateDir}
           test `stat -c %a ${cfg.stateDir}/logs` = "750" || chmod 750 ${cfg.stateDir}/logs
           chown -R ${cfg.user}:${cfg.group} ${cfg.stateDir}
@@ -466,7 +466,7 @@ in
       };
 
       clientMaxBodySize = mkOption {
-        type = types.string;
+        type = types.str;
         default = "10m";
         description = "Set nginx global client_max_body_size.";
       };
@@ -642,16 +642,5 @@ in
         KeepAlive = true;
       };
     };
-
-    users.users = optionalAttrs (cfg.user == "nginx") (singleton
-      { name = "nginx";
-        gid = config.ids.gids."${cfg.group}"; # not really sound
-        uid = config.ids.uids.nginx;
-      });
-
-    users.groups = optionalAttrs (cfg.group == "nginx") (singleton
-      { name = "nginx";
-        gid = config.ids.gids.nginx;
-      });
   };
 }
