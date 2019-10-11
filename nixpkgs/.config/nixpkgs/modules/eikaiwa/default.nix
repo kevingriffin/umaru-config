@@ -4,8 +4,18 @@ with pkgs;
 with lib;
 
 let
-  elasticsearch = elasticsearch5;
-  elkVersion    = elk5Version;
+  pin =  {
+    "url" = "https://releases.nixos.org/nixpkgs/nixpkgs-19.09pre185562.00ef72610c8/nixexprs.tar.xz";
+    "sha256" = "0sxc6vmn7bnaw1gz7d63pdhbvn9xrn3ybqfvlpg2g19dwldx430k";
+  };
+
+  pinned_pkgs = import (builtins.fetchTarball {
+     inherit (pin) url sha256;
+  }) {};
+in
+let
+  elasticsearch = pinned_pkgs.elasticsearch5;
+  elkVersion    = pinned_pkgs.elk5Version;
   elasticsearchPlugins = callPackage ./elasticsearch-plugins.nix { inherit elasticsearch elkVersion; };
 in
 
