@@ -68,10 +68,6 @@ in
 
   nix.distributedBuilds = true;
 
-  nix.nixPath = [
-    "nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs" # NixOS/nix#1865
-  ] ++ options.nix.nixPath.default;
-
   nixpkgs.config = {
     allowUnfree = true;
     allowUnsupportedSystem = false;
