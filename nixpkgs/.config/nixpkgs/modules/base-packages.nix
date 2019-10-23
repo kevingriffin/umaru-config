@@ -18,6 +18,7 @@ in
      gnupg
      htop
      httpie
+     id3v2
      irssi
      jq
      lego
