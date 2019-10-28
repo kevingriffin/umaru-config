@@ -65,7 +65,7 @@
   '';
 
   services.ndppd = {
-    enable = true;
+    enable = false;
     configFile = pkgs.writeText "ndppd.conf" ''
       proxy ens224 {
         target_hwaddr 00:0C:29:CF:64:31
@@ -78,7 +78,7 @@
     '';
   };
 
-  systemd.services.ndppd.serviceConfig.Restart = "always";
+  # systemd.services.ndppd.serviceConfig.Restart = "always";
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
