@@ -19,10 +19,9 @@
         static_configs = [{
           targets = [
             "localhost:9100"
-            "erika.vm.kevin.jp:9100"
+            "erika.kevin.jp:9100"
             "umaru.kevin.jp:9100"
             "haru.kevin.jp:9100"
-            "reina.kevin.jp:9100"
           ];
         }];
       }
