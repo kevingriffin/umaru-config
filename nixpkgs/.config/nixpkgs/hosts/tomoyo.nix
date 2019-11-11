@@ -40,8 +40,8 @@
 
   kevin.iknow-vpn = {
     enable = true;
-    ips    = [ "192.168.1.165/32" ];
-    allowedIPs  = [ "0.0.0.0/0" ];
+    ips    = [ "192.168.1.165/32" "2001:19f0:7001:3571:c0fe:0:f00:5/128" ];
+    allowedIPs  = [ "0.0.0.0/0" "::/0" ];
   };
 
   kevin.vpn-host = {
