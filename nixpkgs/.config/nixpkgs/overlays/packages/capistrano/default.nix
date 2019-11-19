@@ -1,7 +1,7 @@
-{ lib, bundlerEnv, ruby_2_3, bundler, defaultGemConfig }:
+{ lib, bundlerEnv, ruby_2_5, bundler, defaultGemConfig }:
 
 let
-  ruby = ruby_2_3;
+  ruby = ruby_2_5;
 
   publicGithubUrl = url:
     "https://github.com/" + (lib.removePrefix "git@github.com:" url);
