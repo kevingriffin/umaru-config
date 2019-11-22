@@ -80,7 +80,7 @@ in
     isNormalUser = true;
     home = "/home/kevin";
     description = "Kevin Griffin";
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "dialout" ];
     uid = 1000;
   };
 
