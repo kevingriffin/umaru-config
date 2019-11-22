@@ -5,7 +5,6 @@
     ../modules/preboot-ssh.nix
     ../modules/eikaiwa
     ../modules/ruby-development.nix
-    ../modules/swift.nix
     ../modules/vpn.nix
    ];
 
