@@ -27,14 +27,6 @@
       }
     ];
 
-    rules = [
-      ''
-        ALERT ExporterDown
-          IF up == 0
-          FOR 5m
-      ''
-    ];
-
   };
 }
 
