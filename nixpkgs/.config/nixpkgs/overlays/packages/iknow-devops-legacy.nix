@@ -1,5 +1,5 @@
 { stdenv, lib, buildEnv
-, chef-11, chef-ctl, capistrano, tmux-cssh
+, chef-11, chef-ctl, capistrano
 }:
 
 buildEnv {
@@ -9,6 +9,5 @@ buildEnv {
     chef-11
     chef-ctl
     capistrano
-    tmux-cssh
   ];
 }
