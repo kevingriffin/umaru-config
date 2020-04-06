@@ -14,6 +14,7 @@ in
      gitAndTools.diff-so-fancy
      gitAndTools.hub
      gitFull
+     git-lfs
      gnumake
      gnupg
      htop
