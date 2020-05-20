@@ -40,18 +40,16 @@
     };
   };
 
-  boot.initrd.luks.devices = [
-    {
-      name = "root1";
+  boot.initrd.luks.devices = {
+    root1 = {
       device = "/dev/disk/by-uuid/8537440e-66a3-4696-a9cc-69493e8e97f9";
       allowDiscards = true;
-    }
-    {
-      name = "root2";
-      device = "/dev/disk/by-uuid/02be44d4-9def-47e7-95cb-413bd54130d0";
+    };
+    root3 = {
+      device = "/dev/disk/by-uuid/fa6207ba-af6f-4c9d-b3c6-db9062ce4608";
       allowDiscards = true;
-    }
-  ];
+    };
+  };
 
 
   boot.kernelParams = [ "nomodeset" ];
