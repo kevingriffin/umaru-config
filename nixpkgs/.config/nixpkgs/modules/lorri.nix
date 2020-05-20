@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }:
 
 {
-  services.lorri.enabled = true;
+  services.lorri.enable = true;
 }
