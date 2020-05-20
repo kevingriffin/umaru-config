@@ -1,8 +1,11 @@
-{ config, pkgs, ... }:
+{ stdenv, lib, config, pkgs, ... }:
 
+let
+  unstablePkgs = import<nixpkgs-unstable> {};
+in
 {
   environment.systemPackages = with pkgs; [
-    ruby
+    unstablePkgs.ruby
     bundix
     seeing_is_believing
     rubocop

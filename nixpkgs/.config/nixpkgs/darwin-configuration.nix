@@ -9,7 +9,7 @@ in
 
   imports = [
     ./modules/base-packages.nix
-    ./darwin-modules/eikaiwa-env.nix
+    ./darwin-modules/eikaiwa.nix
     ./darwin-modules
     ./local.nix
   ];
@@ -43,12 +43,6 @@ in
   nixpkgs.overlays = [
     (import ./overlays/packages.nix)
   ];
-
-  # Andrew's Eikaiwa server configuration (redis, postgres, elasticsearch)
-  lorne.eikaiwa-env = {
-    enable = true;
-    enableServices = true;
-  };
 
   # Use neovim as default editor
   environment.variables.EDITOR = "nvim";

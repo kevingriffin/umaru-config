@@ -12,7 +12,7 @@ in
      direnv
      fzf
      gitAndTools.diff-so-fancy
-     gitAndTools.hub
+     unstablePkgs.gitAndTools.hub
      gitFull
      git-lfs
      gnumake

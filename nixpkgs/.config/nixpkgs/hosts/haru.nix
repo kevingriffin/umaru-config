@@ -1,8 +1,10 @@
 { config, pkgs, options, ... }:
 
 {
+
   imports = [
     ../modules/ruby-development.nix
+    ../darwin-modules/lorri.nix
   ];
 
   services.nginx = {
@@ -27,7 +29,6 @@
       sslCertificateKey = "/etc/nginx/lego/certificates/haru.local.kevin.jp.key";
     };
   };
-
 
   # You should generally set this to the total number of logical cores in your system.
   # $ sysctl -n hw.ncpu
