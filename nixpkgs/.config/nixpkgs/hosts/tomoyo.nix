@@ -20,6 +20,9 @@
     };
   };
 
+  console.font       = "Lat2-Terminus16";
+  console.keyMap     = "us";
+
   environment.systemPackages = with pkgs; [
      socat
      iknow-devops

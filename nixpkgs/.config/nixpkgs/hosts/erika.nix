@@ -15,6 +15,17 @@
   boot.zfs.enableUnstable = true;
   boot.loader.grub.device = "nodev";
 
+  fonts.fonts = with pkgs; [
+    carlito
+    dejavu_fonts
+    ipafont
+    kochi-substitute
+    source-code-pro
+  ];
+
+  console.packages   = with pkgs; [ source-code-pro ];
+  console.font       = "source-code-pro";
+  console.keyMap     = "jp106";
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
