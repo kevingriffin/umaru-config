@@ -54,6 +54,7 @@ in
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = false;
+    pinentryFlavor = "curses";
   };
 
   # Enable the OpenSSH daemon.
