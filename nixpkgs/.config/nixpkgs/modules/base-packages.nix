@@ -28,6 +28,7 @@ in
      mosh
      nmap
      overmind
+     pinentry
      ripgrep
      rsync
      speedtest-cli
