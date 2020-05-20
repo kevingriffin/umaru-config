@@ -3,7 +3,7 @@
 {
   services.prometheus = {
     enable = true;
-    extraFlags = [ "-web.external-url=https://tomoyo.kevin.jp/prometheus/" ];
+    webExternalUrl = "https://tomoyo.kevin.jp/prometheus/";
     scrapeConfigs = [
       {
         job_name = "prometheus";
