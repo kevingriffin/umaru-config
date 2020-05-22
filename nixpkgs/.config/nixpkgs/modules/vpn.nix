@@ -121,12 +121,6 @@ let
 in
 {
 
-  # Import Wireguard module with namespace support
-  disabledModules = [ "services/networking/wireguard.nix" ];
-  imports = [
-    ../modules/wireguard.nix
-  ];
-
   options = with lib.types; {
     kevin = {
       iknow-vpn = mkOption {
