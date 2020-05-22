@@ -4,9 +4,7 @@ self: super: {
   iknow-devops = super.callPackage ./packages/iknow-devops.nix {};
   iknow-devops-legacy = super.callPackage ./packages/iknow-devops-legacy.nix {};
   phraseapp_updater = super.callPackage ./packages/phraseapp_updater {};
-  chef-11 = super.callPackage ./packages/chef-11 {
-    ruby = self.ruby_2_3;
-  };
+  chef-11 = super.callPackage ./packages/chef-11 {};
   chef-ctl = super.callPackage ./packages/chef-ctl {};
   capistrano = super.callPackage ./packages/capistrano {};
   csshx = super.callPackage ./packages/csshx.nix {};
@@ -20,7 +18,4 @@ self: super: {
       ref = "rolling-release";
       };
       in import src { inherit src; };
-  nightly-neovim = let
-    pinned-nixpkgs = fetchTarball { url = https://github.com/NixOS/nixpkgs/archive/19.09.tar.gz; };
-    in (import pinned-nixpkgs {}).neovim;
 }

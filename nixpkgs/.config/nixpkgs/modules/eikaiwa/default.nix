@@ -15,6 +15,7 @@ let
 in
 let
   elasticsearch = pinned_pkgs.elasticsearch5;
+  kibana        = pinned_pkgs.kibana5;
   elkVersion    = pinned_pkgs.elk5Version;
   elasticsearchPlugins = callPackage ./elasticsearch-plugins.nix { inherit elasticsearch elkVersion; };
 in
@@ -39,7 +40,7 @@ in
   services.elasticsearch = {
     enable = true;
     listenAddress = "_local_";
-    package = elasticsearch5;
+    package = elasticsearch;
     plugins = elasticsearchPlugins;
     extraJavaOptions = [
       "-Xms1g"
@@ -57,7 +58,7 @@ in
 
   services.kibana = {
     enable = true;
-    package = kibana5;
+    package = kibana;
   };
 
   services.redis.enable = true;

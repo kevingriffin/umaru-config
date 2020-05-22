@@ -35,6 +35,9 @@
   #   defaultLocale = "en_US.UTF-8";
   # };
 
+  console.font       = "Lat2-Terminus16";
+  console.keyMap     = "us";
+
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
 

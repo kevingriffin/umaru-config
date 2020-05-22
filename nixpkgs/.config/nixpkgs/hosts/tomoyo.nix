@@ -13,11 +13,15 @@
   networking.hostName = "tomoyo";
   nix.buildCores = 2;
 
-  boot.initrd.luks.devices = [{
-    name = "rootdev";
+  boot.initrd.luks.devices = {
+    rootdev = {
     device = "/dev/vda2";
     preLVM = true;
-  }];
+    };
+  };
+
+  console.font       = "Lat2-Terminus16";
+  console.keyMap     = "us";
 
   environment.systemPackages = with pkgs; [
      socat
@@ -50,7 +54,7 @@
     prefixLength = 68;
     v4Base = "192.168.2";
     port = 52337;
-    upstreamIfname = "eth0";
+    upstreamIfname = "ens3";
 
     # TODO Make this load peers from a file?
     # git repository of my public keys for wireguard and ssh and gpg
@@ -72,6 +76,9 @@
     rootUrl = "https://tomoyo.kevin.jp/grafana";
     auth.anonymous.enable = false;
   };
+
+  security.acme.email = "me@kevin.jp";
+  security.acme.acceptTerms = true;
 
   services.nginx = {
     enable = true;

@@ -3,8 +3,7 @@
 {
   imports = [
     ./nginx
-    ./eikaiwa-env.nix
-    ./elasticsearch.nix
+    ./eikaiwa.nix
     ./direnv.nix
     ./openssh.nix
     ./ids.nix

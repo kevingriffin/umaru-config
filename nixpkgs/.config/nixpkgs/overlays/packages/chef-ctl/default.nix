@@ -1,4 +1,4 @@
-{ writeShellScriptBin, bundlerEnv, bundler, ruby, defaultGemConfig, fetchpatch, tree }:
+{ writeShellScriptBin, bundlerEnv, bundler, ruby, defaultGemConfig, fetchpatch, tree, tmux-cssh }:
 
 let
   fix-yajl = fetchpatch {
@@ -18,13 +18,14 @@ let
     };
   };
 
-
   src = builtins.fetchGit {
     url = "git@github.com:iknow/chef-ctl";
-    rev = "934cb5fc1828cd0697ccfa627efa7b27e721f750";
+    rev = "c78688b8201d4c92237d420ac794e1f48c12ec3a";
   };
 in
 
 writeShellScriptBin "chef-ctl" ''
+  : ''${CHEF_CTL_CSSH:=${tmux-cssh}/bin/tmux-cssh}
+  export CHEF_CTL_CSSH
   ${gems}/bin/bundle exec ${src}/chef-ctl "$@"
 ''

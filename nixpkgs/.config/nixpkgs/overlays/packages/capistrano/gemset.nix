@@ -48,7 +48,7 @@
     source = {
       fetchSubmodules = false;
       rev = "7efbb84c37a6e7133f3d8a8ff557487a187603ea";
-      sha256 = "02b8xfj4ayjs08znjmbfw79gy867hxby95f96mb8mjbr6l1y02bf";
+      sha256 = "1m5frkn0nnzw5qagkkw3biaarsamgcg06y0m4h2qdaqg318gp734";
       type = "git";
       url = "git@github.com:iknow/capistrano-chef";
     };

@@ -5,7 +5,7 @@
     ../modules/preboot-ssh.nix
     ../modules/eikaiwa
     ../modules/ruby-development.nix
-    ../modules/swift.nix
+    ../modules/lorri.nix
     ../modules/vpn.nix
    ];
 
@@ -15,6 +15,17 @@
   boot.zfs.enableUnstable = true;
   boot.loader.grub.device = "nodev";
 
+  fonts.fonts = with pkgs; [
+    carlito
+    dejavu_fonts
+    ipafont
+    kochi-substitute
+    source-code-pro
+  ];
+
+  console.packages   = with pkgs; [ source-code-pro ];
+  console.font       = "source-code-pro";
+  console.keyMap     = "jp106";
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
@@ -41,21 +52,22 @@
     };
   };
 
-  boot.initrd.luks.devices = [
-    {
-      name = "root1";
+  boot.initrd.luks.devices = {
+    root1 = {
       device = "/dev/disk/by-uuid/8537440e-66a3-4696-a9cc-69493e8e97f9";
       allowDiscards = true;
-    }
-    {
-      name = "root2";
-      device = "/dev/disk/by-uuid/02be44d4-9def-47e7-95cb-413bd54130d0";
+    };
+    root3 = {
+      device = "/dev/disk/by-uuid/fa6207ba-af6f-4c9d-b3c6-db9062ce4608";
       allowDiscards = true;
-    }
-  ];
+    };
+  };
 
 
   boot.kernelParams = [ "nomodeset" ];
+  boot.kernel.sysctl = {
+    "fs.inotify.max_user_watches" = "1048576";
+  };
 
   kevin.preboot-ssh = {
     enable = true;

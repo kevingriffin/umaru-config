@@ -17,13 +17,7 @@ in
 
   boot.cleanTmpDir = true;
 
-  # Select internationalisation properties.
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "us";
-    defaultLocale = "en_US.UTF-8";
-  };
-
+  i18n.defaultLocale = "en_US.UTF-8";
 
   nix.useSandbox = true;
 
@@ -58,6 +52,7 @@ in
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = false;
+    pinentryFlavor = "curses";
   };
 
   # Enable the OpenSSH daemon.
@@ -80,7 +75,7 @@ in
     isNormalUser = true;
     home = "/home/kevin";
     description = "Kevin Griffin";
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "dialout" ];
     uid = 1000;
   };
 

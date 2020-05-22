@@ -642,5 +642,16 @@ in
         KeepAlive = true;
       };
     };
+
+    users.users = optionalAttrs (cfg.user == "nginx") (singleton
+      { name = "nginx";
+        gid = config.ids.gids."${cfg.group}"; # not really sound
+        uid = config.ids.uids.nginx;
+      });
+
+    users.groups = optionalAttrs (cfg.group == "nginx") (singleton
+      { name = "nginx";
+        gid = config.ids.gids.nginx;
+      });
   };
 }

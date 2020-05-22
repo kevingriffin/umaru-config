@@ -3,7 +3,7 @@
 {
   services.prometheus = {
     enable = true;
-    extraFlags = [ "-web.external-url=https://tomoyo.kevin.jp/prometheus/" ];
+    webExternalUrl = "https://tomoyo.kevin.jp/prometheus/";
     scrapeConfigs = [
       {
         job_name = "prometheus";
@@ -25,14 +25,6 @@
           ];
         }];
       }
-    ];
-
-    rules = [
-      ''
-        ALERT ExporterDown
-          IF up == 0
-          FOR 5m
-      ''
     ];
 
   };
