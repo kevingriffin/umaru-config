@@ -7,8 +7,8 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-#     ../modules/internet-of-shit.nix
-#     ../modules/home-assistant.nix
+      # ../modules/hass.nix
+      #../modules/vpn.nix
     ];
 
   # Use the GRUB 2 boot loader.
@@ -56,29 +56,24 @@
     headless = true;
   };
 
+  # kevin.vpn-host = {
+  #   enable = false;
+  #   prefix = "2404:7a80:32e1:6600";
+  #   prefixLength = 68;
+  #   v4Base = "192.168.2";
+  #   port = 52337;
+  #   upstreamIfname = "ens192";
 
-  # networking.dhcpcd.denyInterfaces = [ "ens224" ];
-  networking.dhcpcd.extraConfig = ''
-    interface ens224
-      noipv4
-      ipv6ra_noautoconf
-  '';
-
-  services.ndppd = {
-    enable = false;
-    configFile = pkgs.writeText "ndppd.conf" ''
-      proxy ens224 {
-        target_hwaddr 00:0C:29:CF:64:31
-        timeout 1000
-        rule 2404:7a80:3440:4a00::/64 {
-          # iface ens192
-          static
-        }
-      }
-    '';
-  };
-
-  # systemd.services.ndppd.serviceConfig.Restart = "always";
+  #   # TODO Make this load peers from a file?
+  #   # git repository of my public keys for wireguard and ssh and gpg
+  #   peers = {
+  #     "chieri" = { ordinal = 2; publicKey = "Oo9fzy6JAuvG9S1qR2ACVbUjKxPLQFsHqg4uDGQQHTY="; };
+  #     "alpha"  = { ordinal = 3; publicKey = "erWAQdCkqatIRy1+01mhBWPg8KApwVrzNxuRGeMGvwE="; };
+  #     "umaru"  = { ordinal = 4; publicKey = "lbPCBtO7qz7pTPreg7+O1DW8YRJAQGolheknwmyD5TE="; };
+  #     "erika"  = { ordinal = 5; publicKey = "PBy+Msv2RZSSH9UodBa1JJ5ZsuER7rXinuW2QkzemAE="; };
+  #     "haru"   = { ordinal = 6; publicKey = "fLyslIOYAC5kPCrolf/2yqlIQR3vDltnFiM+H6Kk00g="; };
+  #   };
+  # };
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
