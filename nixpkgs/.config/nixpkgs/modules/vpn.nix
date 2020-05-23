@@ -22,6 +22,7 @@ let
       port           = mkOption { type = int; };
       upstreamIfname = mkOption { type = str; };
       peers          = mkOption { type = attrs; };
+      neighborProxy  = mkOption { type = bool; };
     };
   };
 
@@ -47,7 +48,7 @@ let
     };
   };
 
-  sharedHostConfig = { v4Base, prefix, prefixLength, port, upstreamIfname, peers} : {
+  sharedHostConfig = { v4Base, prefix, prefixLength, port, upstreamIfname, peers, neighborProxy} : {
       networking.wireguard.interfaces = {
         wg4 = {
           # TODO Make nat optional
@@ -63,15 +64,21 @@ let
             ];
           }) peers;
 
-          postSetup = (lib.concatStrings (lib.mapAttrsToList (n: { ordinal, ...}: ''
-            ${pkgs.iproute}/bin/ip -6 neigh add proxy ${prefix}::${toString ordinal} dev ${upstreamIfname}
-      '') peers)) + ''
+          postSetup = (if neighborProxy then
+            (lib.concatStrings (lib.mapAttrsToList (n: { ordinal, ...}: ''
+              ${pkgs.iproute}/bin/ip -6 neigh add proxy ${prefix}::${toString ordinal} dev ${upstreamIfname}
+            '') peers))
+          else
+            "") + ''
             ${pkgs.iproute}/bin/ip link set wg4 mtu ${toString (1420 - 20)}
           '';
 
-          postShutdown = lib.concatStrings (lib.mapAttrsToList (n: { ordinal, ... }: ''
-            ${pkgs.iproute}/bin/ip -6 neigh del proxy ${prefix}::${toString ordinal} dev ${upstreamIfname}
-          '') peers);
+          postShutdown = (if neighborProxy then
+            lib.concatStrings (lib.mapAttrsToList (n: { ordinal, ... }: ''
+              ${pkgs.iproute}/bin/ip -6 neigh del proxy ${prefix}::${toString ordinal} dev ${upstreamIfname}
+            '') peers)
+          else
+            "");
         };
       };
 
@@ -156,7 +163,7 @@ in
     }))
 
     (mkIf kevin-cfg.vpn-host.enable (sharedHostConfig {
-      inherit (kevin-cfg.vpn-host) v4Base prefix prefixLength port upstreamIfname peers;
+      inherit (kevin-cfg.vpn-host) v4Base prefix prefixLength port upstreamIfname peers neighborProxy;
     })
     )
   ];
