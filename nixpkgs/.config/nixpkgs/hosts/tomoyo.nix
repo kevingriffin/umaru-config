@@ -55,6 +55,7 @@
     v4Base = "192.168.2";
     port = 52337;
     upstreamIfname = "ens3";
+    neighborProxy = true;
 
     # TODO Make this load peers from a file?
     # git repository of my public keys for wireguard and ssh and gpg
