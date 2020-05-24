@@ -3,7 +3,7 @@
     (builtins.fetchGit {
       url = "https://github.com/thefloweringash/hass_ir_adapter";
       ref = "master";
-      rev = "d0343d584dc9f31bb3d58ca802aa78e7d5b6c052";
+      rev = "bf490bd8230d28bde114f8812c3557e41efb437c";
     } + "/nix/module.nix")
   ];
 
@@ -14,17 +14,22 @@
     ];
   };
 
+  security.acme.email = "me@kevin.jp";
+  security.acme.acceptTerms = true;
+
   security.acme.certs = {
     "hass.kevin.jp" = {
       allowKeysForGroup = true;
       group = "ssl-cert";
-      plugins = [ "fullchain.pem" "chain.pem" "cert.pem" "full.pem" "key.pem" "account_key.json" "account_reg.json" ];
+      dnsProvider = "cloudflare";
+      credentialsFile = "/var/secrets/cloudflare";
     };
 
     "mqtt.kevin.jp" = {
       allowKeysForGroup = true;
       group = "ssl-cert";
-      plugins = [ "fullchain.pem" "chain.pem" "cert.pem" "full.pem" "key.pem" "account_key.json" "account_reg.json" ];
+      dnsProvider = "cloudflare";
+      credentialsFile = "/var/secrets/cloudflare";
     };
   };
 
@@ -32,16 +37,18 @@
     enable = true;
     recommendedProxySettings = true;
     virtualHosts."hass.kevin.jp" = {
-      enableACME = true;
       forceSSL = true;
+      sslCertificate    = "${config.security.acme.certs."hass.kevin.jp".directory}/cert.pem";
+      sslCertificateKey = "${config.security.acme.certs."hass.kevin.jp".directory}/key.pem";
       locations."/" = {
         proxyPass = "http://127.0.0.1:8123";
         proxyWebsockets = true;
       };
     };
     virtualHosts."mqtt.kevin.jp" = {
-      enableACME = true;
       forceSSL = true;
+      sslCertificate    = "${config.security.acme.certs."mqtt.kevin.jp".directory}/cert.pem";
+      sslCertificateKey = "${config.security.acme.certs."mqtt.kevin.jp".directory}/key.pem";
       locations."/" = {
         proxyPass = "http://127.0.0.1:1883";
         proxyWebsockets = true;
@@ -129,7 +136,7 @@
     hassPkg = withoutTests (pkgs.home-assistant.override {
       extraPackages = ps: with ps; [
         xmltodict pexpect pyunifi paho-mqtt (hap_python ps)
-        netdisco pyatv (homekit ps)
+        netdisco (homekit ps)
       ];
     });
 
@@ -238,7 +245,7 @@
       mqtt:
         broker: tcp://localhost:1883
         username: hass_ir_adapter
-        password: i2JFPCdJasQNZZxq
+        password: 9cQNG6Y4vYFRsVHQPhfc2ZjEYndoT44ZFYmKfEGMsYyLmru6RyuLzpvTacPUZgbQ
       emitters:
         - id: esp1
           type: irblaster
@@ -265,6 +272,17 @@
           emitter: esp3
           type: daikin
           temperature_topic: sht/esp3/temp
+      lights:
+        - id: computer_room_lights
+          name: "Computer Room Lights"
+          type: daiko
+          emitter: esp3
+          channel: 1
+        - id: living_room_lights
+          name: "Living Room Lights"
+          type: daiko
+          emitter: esp1
+          channel: 1
     '';
   };
 
