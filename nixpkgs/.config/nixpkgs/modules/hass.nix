@@ -133,7 +133,7 @@
     gatt       = pythonPackages: pythonPackages.callPackage ./packages/gatt_python.nix { };
     homekit    = pythonPackages: pythonPackages.callPackage ./packages/homekit_python.nix { gatt = (gatt pythonPackages); };
 
-    hassPkg = withoutTests (pkgs.home-assistant.override {
+    hassPkg = withoutTests ((import<nixpkgs-unstable> {}).home-assistant.override {
       extraPackages = ps: with ps; [
         xmltodict pexpect pyunifi paho-mqtt (hap_python ps)
         netdisco (homekit ps)
@@ -169,8 +169,6 @@
         platform = "google_translate";
       };
 
-      ios = {};
-
       mqtt = {
         broker = "localhost";
         username = "hass";
@@ -179,11 +177,14 @@
       };
 
       homekit = {
+        name = "Flonne Bridge";
         filter = {
           include_entities = [
             "climate.room_1_ac"
             "climate.room_2_ac"
             "climate.room_3_ac"
+            "light.living_room_lights"
+            "light.computer_room_lights"
           ];
         };
       };
