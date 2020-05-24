@@ -7,7 +7,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      # ../modules/hass.nix
+      ../modules/hass.nix
       ../modules/vpn.nix
     ];
 
