@@ -179,11 +179,14 @@
       };
 
       homekit = {
+        name = "HomeAssistant Bridge";
         filter = {
           include_entities = [
             "climate.room_1_ac"
             "climate.room_2_ac"
             "climate.room_3_ac"
+            "light.living_room_lights"
+            "light.computer_room_lights"
           ];
         };
       };
@@ -268,9 +271,9 @@
           type: daikin
           temperature_topic: sht/esp2/temp
         - id: room_3_ac
-          name: "Room 3 AC"
+          name: "Computer Room AC"
           emitter: esp3
-          type: daikin
+          type: mitsubishi_gp82
           temperature_topic: sht/esp3/temp
       lights:
         - id: computer_room_lights
