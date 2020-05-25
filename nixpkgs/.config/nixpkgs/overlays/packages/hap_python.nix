@@ -1,19 +1,20 @@
 { lib, buildPythonPackage, fetchPypi
-, curve25519-donna, ed25519, pycryptodome, tlslite-ng, zeroconf
-, ecdsa
+, curve25519-donna, ed25519, cryptography, zeroconf
+, pycrypto, tlslite-ng, ecdsa
 }:
 
 buildPythonPackage rec {
   pname = "HAP-python";
-  version = "2.5.0";
+  version = "2.8.1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "0br52gv4jdcs5vk71i02f7afc8wml8561kfpgr17krcyvxjyazxw";
+    sha256 = "0h8bjp2vf4ckh9gvd4v821gmh2jiba3z0i8h77qy0yd4qzhv1wgs";
   };
 
   propagatedBuildInputs = [
-    curve25519-donna ed25519 pycryptodome tlslite-ng zeroconf
-    ecdsa
+    curve25519-donna ed25519 cryptography zeroconf
+    pycrypto tlslite-ng ecdsa
   ];
 }
+
