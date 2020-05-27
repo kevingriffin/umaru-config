@@ -31,6 +31,7 @@ in
     borgbackup
     traceroute
     sshfs
+    pinentry
   ];
 
   # Use neovim as default editor
