@@ -38,6 +38,10 @@
         proxyPass = "http://localhost:3000";
         proxyWebsockets = true;
       };
+      locations."/socket.io" = {
+        proxyPass = "http://localhost:3002";
+        proxyWebsockets = true;
+      };
       sslCertificate = "/etc/nginx/lego/certificates/erika.kevin.jp.crt";
       sslCertificateKey = "/etc/nginx/lego/certificates/erika.kevin.jp.key";
     };
@@ -45,6 +49,10 @@
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://localhost:3000";
+        proxyWebsockets = true;
+      };
+      locations."/socket.io" = {
+        proxyPass = "http://localhost:3002";
         proxyWebsockets = true;
       };
       sslCertificate = "/etc/nginx/lego/certificates/erika.local.kevin.jp.crt";
