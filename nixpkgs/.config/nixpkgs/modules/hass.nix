@@ -3,7 +3,7 @@
     (builtins.fetchGit {
       url = "https://github.com/thefloweringash/hass_ir_adapter";
       ref = "master";
-      rev = "bf490bd8230d28bde114f8812c3557e41efb437c";
+      rev = "cf77c16c268504352c97bf03959bb6d45840ca0c";
     } + "/nix/module.nix")
   ];
 
@@ -179,14 +179,15 @@
       };
 
       homekit = {
-        name = "HomeAssistant Bridge";
+        name = "Hass Bridge";
         filter = {
           include_entities = [
             "climate.room_1_ac"
             "climate.room_2_ac"
             "climate.room_3_ac"
-            "light.living_room_lights"
-            "light.computer_room_lights"
+            "light.room_1_lights"
+            "light.room_2_lights"
+            "light.room_3_lights"
           ];
         };
       };
@@ -263,28 +264,33 @@
         - id: room_1_ac
           name: "Room 1 AC"
           emitter: esp1
-          type: daikin
+          type: mitsubishi_rh101
           temperature_topic: sht/esp1/temp
         - id: room_2_ac
           name: "Room 2 AC"
           emitter: esp2
-          type: daikin
+          type: mitsubishi_rh101
           temperature_topic: sht/esp2/temp
         - id: room_3_ac
-          name: "Computer Room AC"
+          name: "Room 3 AC"
           emitter: esp3
-          type: mitsubishi_gp82
+          type: mitsubishi_rh101
           temperature_topic: sht/esp3/temp
       lights:
-        - id: computer_room_lights
-          name: "Computer Room Lights"
-          type: daiko
-          emitter: esp3
-          channel: 1
-        - id: living_room_lights
-          name: "Living Room Lights"
+        - id: room_1_lights
+          name: "Room 1 Lights"
           type: daiko
           emitter: esp1
+          channel: 1
+        - id: room_2_lights
+          name: "Room 2 Lights"
+          type: daiko
+          emitter: esp2
+          channel: 1
+        - id: room_3_lights
+          name: "Room 3 Lights"
+          type: daiko
+          emitter: esp3
           channel: 1
     '';
   };
