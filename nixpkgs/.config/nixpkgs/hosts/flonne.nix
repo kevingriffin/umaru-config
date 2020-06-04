@@ -64,7 +64,7 @@
     prefix = "2404:7a80:32e1:6601";
     prefixLength = 64;
     v4Base = "192.168.2";
-    port = 52337;
+    port = 50798;
     upstreamIfname = "ens192";
     neighborProxy = false;
 
