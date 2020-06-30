@@ -56,7 +56,10 @@
     };
   };
 
-  services.mosquitto = {
+  services.mosquitto = let
+    secrets = import ../secrets.nix;
+  in
+  {
     enable = true;
     host = "0.0.0.0";
     allowAnonymous = true;
@@ -83,7 +86,7 @@
         "pattern read ir/%c/send"
         "pattern readwrite sht/%c/#"
       ];
-      hashedPassword = "$6$fSBYSgsu47R9Gp0D$mGj81rKcmxwAewPe8odxNSBrjWC1gh/VAWWg5TA0zqQoFswmo+ve3rVIqqX7O1Wbgrgomgjis3DPfa1dEH8qcw==";
+      hashedPassword = secrets.mosquitto-adapter-hashed-password;
     };
 
     users.esp2 = {
@@ -91,7 +94,7 @@
         "pattern read ir/%c/send"
         "pattern readwrite sht/%c/#"
       ];
-      hashedPassword = "$6$fSBYSgsu47R9Gp0D$mGj81rKcmxwAewPe8odxNSBrjWC1gh/VAWWg5TA0zqQoFswmo+ve3rVIqqX7O1Wbgrgomgjis3DPfa1dEH8qcw==";
+      hashedPassword = secrets.mosquitto-adapter-hashed-password;
     };
 
     users.esp3 = {
@@ -99,7 +102,7 @@
         "pattern read ir/%c/send"
         "pattern readwrite sht/%c/#"
       ];
-      hashedPassword = "$6$fSBYSgsu47R9Gp0D$mGj81rKcmxwAewPe8odxNSBrjWC1gh/VAWWg5TA0zqQoFswmo+ve3rVIqqX7O1Wbgrgomgjis3DPfa1dEH8qcw==";
+      hashedPassword = secrets.mosquitto-adapter-hashed-password;
     };
 
 
@@ -109,7 +112,7 @@
         "topic read homie/#"
         "topic read sht/#"
       ];
-      hashedPassword = "$6$yGta5lTbaiC0SABo$KY6+3bpM8nmmpOB9TE3gh32aewBKDhBzsrHzkdsdpua+dTZpnInRlBAP5sp88LJjowhPYsul0D4/9cIiR3DwWg==";
+      hashedPassword = secrets.mosquitto-hass-ir-hashed-password;
     };
 
     users.hass_ir_adapter = {
@@ -119,7 +122,7 @@
         "topic read sht/#"
         "topic read homie/#"
       ];
-      hashedPassword = "$6$yGta5lTbaiC0SABo$KY6+3bpM8nmmpOB9TE3gh32aewBKDhBzsrHzkdsdpua+dTZpnInRlBAP5sp88LJjowhPYsul0D4/9cIiR3DwWg==";
+      hashedPassword = secrets.mosquitto-hass-ir-hashed-password;
     };
   };
 
@@ -132,14 +135,16 @@
     hap_python = pythonPackages: pythonPackages.callPackage ./packages/hap_python.nix { };
     gatt       = pythonPackages: pythonPackages.callPackage ./packages/gatt_python.nix { };
     homekit    = pythonPackages: pythonPackages.callPackage ./packages/homekit_python.nix { gatt = (gatt pythonPackages); };
+    pysesame2  = pythonPackages: pythonPackages.callPackage ./packages/pysesame2_python.nix { };
 
     hassPkg = withoutTests (pkgs.home-assistant.override {
       extraPackages = ps: with ps; [
         xmltodict pexpect pyunifi paho-mqtt (hap_python ps)
-        netdisco (homekit ps)
+        netdisco (homekit ps) (pysesame2 ps)
       ];
     });
 
+    secrets = import ../secrets.nix;
   in
   {
     enable = true;
@@ -165,16 +170,10 @@
 
       discovery = {};
 
-      tts = {
-        platform = "google_translate";
-      };
-
-      ios = {};
-
       mqtt = {
         broker = "localhost";
         username = "hass";
-        password = "9cQNG6Y4vYFRsVHQPhfc2ZjEYndoT44ZFYmKfEGMsYyLmru6RyuLzpvTacPUZgbQ";
+        password = secrets.mosquitto-user-hashed-password;
         discovery = true;
       };
 
@@ -188,9 +187,17 @@
             "light.room_1_lights"
             "light.room_2_lights"
             "light.room_3_lights"
+            "lock.front_top"
           ];
         };
       };
+
+      lock = [
+        {
+          platform = "sesame";
+          api_key = secrets.sesame-token;
+        }
+      ];
 
       sensor = [
         {
@@ -243,13 +250,16 @@
     };
   };
 
-  services.hass_ir_adapter = {
+  services.hass_ir_adapter = let
+    secrets = import ../secrets.nix;
+  in
+  {
     enable = true;
     config = ''
       mqtt:
         broker: tcp://localhost:1883
         username: hass_ir_adapter
-        password: 9cQNG6Y4vYFRsVHQPhfc2ZjEYndoT44ZFYmKfEGMsYyLmru6RyuLzpvTacPUZgbQ
+        password: ${secrets.mosquitto-user-hashed-password}
       emitters:
         - id: esp1
           type: irblaster
