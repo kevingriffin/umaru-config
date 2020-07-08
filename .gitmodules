@@ -1,0 +1,3 @@
+[submodule "nixpkgs/.config/nixpkgs/nix-mape"]
+	path = nixpkgs/.config/nixpkgs/nix-mape
+	url = git@bitbucket.org:thefloweringash/nix-mape.git

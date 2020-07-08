@@ -111,4 +111,6 @@
     home = "/home/git";
     description = "git";
   };
+
+  system.stateVersion = "19.03";
 }

@@ -122,4 +122,6 @@
   };
 
   nix.buildCores = 8;
+
+  system.stateVersion = "19.03";
 }

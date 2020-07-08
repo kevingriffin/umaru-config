@@ -1,0 +1,13 @@
+--- dhcpcd-8.0.6/src/dhcpcd-definitions.conf.orig	2019-11-10 23:36:20.611937177 +0900
++++ dhcpcd-8.0.6/src/dhcpcd-definitions.conf	2019-11-10 23:36:27.991823369 +0900
+@@ -576,8 +576,8 @@
+ # Section 7 states that clients MUST ignore the option 81
+
+ # DHCPv6 SOL_MAX_RT, RFC7083
+-define6 82	request uint32		sol_max_rt
+-define6	83	request uint32		inf_max_rt
++define6 82	uint32		sol_max_rt
++define6	83	uint32		inf_max_rt
+
+ # DHCPv6 Softwire Address and Port-Mapped Clients, RFC7598
+ define6	89	embed			s46_rule
