@@ -1,6 +1,5 @@
 self: super: {
   seeing_is_believing = super.callPackage ./packages/seeing_is_believing/default.nix {};
-  _1password = super.callPackage ./packages/1password/default.nix {};
   iknow-devops = super.callPackage ./packages/iknow-devops.nix {};
   iknow-devops-legacy = super.callPackage ./packages/iknow-devops-legacy.nix {};
   phraseapp_updater = super.callPackage ./packages/phraseapp_updater {};
