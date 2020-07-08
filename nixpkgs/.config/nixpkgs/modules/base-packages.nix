@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstablePkgs, ... }:
 
 let
-  unstablePkgs = import<nixpkgs-unstable> {};
+  unstablePkgs = import<nixpkgs-unstable> { config = { allowUnfree = true; }; };
   newYubikeyManagerPkgs = import (builtins.fetchGit {
     url = "https://github.com/nixos/nixpkgs";
     ref = "44fd570d7344fb31d7dd92a42d6e1ef872b5f76b";
