@@ -58,6 +58,15 @@ in
       matchConfig.Name = internalIf;
       networkConfig.Address = "192.168.11.1/24";
       networkConfig.IPForward = "yes";
+      routes = with hosts.v6; [
+        {
+          routeConfig = {
+            Destination = "2404:7a80:32e1:6601::/64";
+            Gateway = flonne;
+            GatewayOnLink = "yes";
+          };
+        }
+      ];
     };
   };
 
