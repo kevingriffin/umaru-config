@@ -2,10 +2,6 @@
 
 let
   unstablePkgs = import<nixpkgs-unstable> { config = { allowUnfree = true; }; };
-  newYubikeyManagerPkgs = import (builtins.fetchGit {
-    url = "https://github.com/nixos/nixpkgs";
-    ref = "44fd570d7344fb31d7dd92a42d6e1ef872b5f76b";
-  }) {};
 in
 {
    environment.systemPackages = with pkgs; [
@@ -49,6 +45,6 @@ in
      wireshark
      unstablePkgs.youtube-dl
      yank
-     newYubikeyManagerPkgs.yubikey-manager
+     unstablePkgs.yubikey-manager
    ];
 }
