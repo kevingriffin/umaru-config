@@ -136,11 +136,13 @@
     gatt       = pythonPackages: pythonPackages.callPackage ./packages/gatt_python.nix { };
     homekit    = pythonPackages: pythonPackages.callPackage ./packages/homekit_python.nix { gatt = (gatt pythonPackages); };
     pysesame2  = pythonPackages: pythonPackages.callPackage ./packages/pysesame2_python.nix { };
+    bravia_tv  = pythonPackages: pythonPackages.callPackage ./packages/bravia_tv_python.nix { };
+    getmac  = pythonPackages: pythonPackages.callPackage ./packages/getmac_python.nix { };
 
     hassPkg = withoutTests (pkgs.home-assistant.override {
       extraPackages = ps: with ps; [
         xmltodict pexpect pyunifi paho-mqtt (hap_python ps)
-        netdisco (homekit ps) (pysesame2 ps)
+        netdisco (homekit ps) (pysesame2 ps) (bravia_tv ps) (getmac ps)
       ];
     });
 
@@ -158,7 +160,21 @@
         elevation = 33;
         unit_system = "metric";
         time_zone = "Asia/Tokyo";
+
+        customize = {
+          ${"media_player.sony_bravia_tv"} = {
+            device_class = "tv";
+            friendly_name = "Bravia";
+            source_list = [
+              "HDMI1/MHL"
+              "HDMI2"
+              "HDMI3"
+              "HDMI4"
+            ];
+          };
+        };
       };
+
 
       default_config = {};
 
@@ -170,6 +186,13 @@
 
       discovery = {};
 
+      media_player = [
+        {
+          platform = "braviatv";
+          host     = "192.168.11.94";
+        }
+      ];
+
       mqtt = {
         broker = "localhost";
         username = "hass";
@@ -179,6 +202,7 @@
 
       homekit = {
         name = "Hass Bridge";
+
         filter = {
           include_entities = [
             "climate.room_1_ac"
@@ -188,6 +212,7 @@
             "light.room_2_lights"
             "light.room_3_lights"
             "lock.front_top"
+            "media_player.sony_bravia_tv"
           ];
         };
       };
