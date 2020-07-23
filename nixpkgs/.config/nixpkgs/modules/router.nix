@@ -115,6 +115,7 @@ in
         flonne
         haru
         erika
+        makoto
       ];
     };
 
