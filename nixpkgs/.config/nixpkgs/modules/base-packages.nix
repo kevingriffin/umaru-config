@@ -18,6 +18,7 @@ in
      unstablePkgs._1password
      ag
      age
+     unstablePkgs.aria2
      bind
      colordiff
      direnv
@@ -32,12 +33,15 @@ in
      httpie
      id3v2
      jq
+     jrnl
      lego
      lsof
      unstablePkgs.neovim
      mosh
      nmap
      overmind
+     pfetch
+     ranger
      ripgrep
      rsync
      speedtest-cli
@@ -49,11 +53,12 @@ in
      tmux-cssh
      tree
      unzip
-     wget
      weechat
+     wget
      wireshark
      unstablePkgs.youtube-dl
      yank
+     unstablePkgs.ytop
      unstablePkgs.yubikey-manager
    ];
 }
