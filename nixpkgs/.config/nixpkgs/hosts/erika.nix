@@ -23,6 +23,8 @@
     source-code-pro
   ];
 
+  time.timeZone = "Asia/Tokyo";
+
   console.packages   = with pkgs; [ source-code-pro ];
   console.font       = "source-code-pro";
   console.keyMap     = "jp106";

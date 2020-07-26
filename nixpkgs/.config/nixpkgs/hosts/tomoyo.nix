@@ -30,6 +30,8 @@
      phraseapp_updater
   ];
 
+  time.timeZone = "Asia/Tokyo";
+
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   services.prometheus.exporters.node = {
