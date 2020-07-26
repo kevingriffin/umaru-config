@@ -17,4 +17,9 @@ self: super: {
       ref = "rolling-release";
       };
       in import src { inherit src; };
+  python38 = super.python38.override {
+    packageOverrides = pythonSelf: pythonSuper: {
+      apsw = pythonSuper.callPackage ./packages/apsw_python.nix {};
+    };
+  };
 }
