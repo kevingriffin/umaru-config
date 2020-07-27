@@ -6,6 +6,7 @@
     ../modules/eikaiwa
     ../modules/ruby-development.nix
     ../modules/lorri.nix
+    ../modules/weechat.nix
     ../modules/vpn.nix
    ];
 

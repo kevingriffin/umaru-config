@@ -4,6 +4,7 @@
 
   imports = [
     ../modules/ruby-development.nix
+    ../modules/weechat.nix
     ../darwin-modules/lorri.nix
   ];
 

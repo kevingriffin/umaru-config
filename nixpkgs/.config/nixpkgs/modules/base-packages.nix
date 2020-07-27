@@ -2,16 +2,6 @@
 
 let
   unstablePkgs = import<nixpkgs-unstable> { config = { allowUnfree = true; }; };
-
-  weechat = unstablePkgs.weechat.override {
-    configure = { availablePlugins, ... }: {
-      scripts = [ unstablePkgs.weechatScripts.weechat-matrix ];
-      plugins = [
-        (availablePlugins.python.withPackages (ps: [ unstablePkgs.weechatScripts.weechat-matrix ]))
-      ];
-    };
-  };
-
 in
 {
    environment.systemPackages = with pkgs; [
@@ -53,7 +43,6 @@ in
      tmux-cssh
      tree
      unzip
-     weechat
      wget
      wireshark
      unstablePkgs.youtube-dl
