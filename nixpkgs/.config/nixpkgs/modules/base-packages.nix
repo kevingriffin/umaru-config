@@ -1,8 +1,5 @@
 { config, pkgs, unstablePkgs, ... }:
 
-let
-  unstablePkgs = import<nixpkgs-unstable> { config = { allowUnfree = true; }; };
-in
 {
    environment.systemPackages = with pkgs; [
      unstablePkgs._1password

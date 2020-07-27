@@ -1,10 +1,10 @@
-{ config, pkgs, options, ... }:
+{ config, pkgs, unstablePkgs, ... }:
 
 {
 
   imports = [
-    ../modules/ruby-development.nix
-    ../modules/weechat.nix
+    (import ../modules/ruby-development.nix { inherit config pkgs unstablePkgs; })
+    (import ../modules/weechat.nix { inherit config; pkgs = unstablePkgs; })
     ../darwin-modules/lorri.nix
   ];
 
@@ -26,10 +26,11 @@
     };
   };
 
+  services.prometheus.exporters.node.enable = true;
+
   # You should generally set this to the total number of logical cores in your system.
   # $ sysctl -n hw.ncpu
   nix.maxJobs = 12;
   nix.buildCores = 12;
 
-  services.prometheus.exporters.node.enable = true;
 }

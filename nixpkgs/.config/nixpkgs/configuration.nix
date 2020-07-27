@@ -5,18 +5,14 @@
 { config, pkgs, ... }:
 
 let
-  unstablePkgs = import<nixpkgs-unstable> {};
+  unstablePkgs = import<nixpkgs-unstable> { config.allowUnfree = true; };
 in
 {
   imports = [
     ./hardware-configuration.nix
-    ./modules/base-packages.nix
-    ./local.nix
+    (import ./modules/base-packages.nix { inherit config pkgs unstablePkgs; })
+    (import ./local.nix { inherit config pkgs unstablePkgs; })
   ];
-
-  boot.cleanTmpDir = true;
-
-  i18n.defaultLocale = "en_US.UTF-8";
 
   nix.useSandbox = true;
 
@@ -25,6 +21,9 @@ in
     (import ./overlays/packages.nix)
   ];
 
+  boot.cleanTmpDir = true;
+
+  i18n.defaultLocale = "en_US.UTF-8";
 
   environment.systemPackages = with pkgs; [
     borgbackup
@@ -36,54 +35,52 @@ in
   # Use neovim as default editor
   environment.variables.EDITOR = "nvim";
 
-  programs.mtr.enable     = true;
-  programs.mosh.enable    = true;
-  programs.fish = {
-    enable = true;
-    interactiveShellInit = ''
-        source (fzf-share)/key-bindings.fish
-    '';
-  };
-  # Set up fzf to go through hidden files
-  # and use a fast rg backend
-  environment.variables.FZF_DEFAULT_COMMAND = "rg --files --hidden -g='!.git'";
-  environment.variables.FZF_CTRL_T_COMMAND  = "rg --files --hidden -g='!.git'";
   programs.ssh.startAgent = true;
+
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = false;
     pinentryFlavor = "curses";
   };
 
-  # Enable the OpenSSH daemon.
-  services.openssh = {
+  programs.mtr.enable     = true;
+
+  programs.mosh.enable    = true;
+
+  programs.fish = {
     enable = true;
-    passwordAuthentication = false;
+    interactiveShellInit = ''
+        source (fzf-share)/key-bindings.fish
+    '';
+  };
+
+  # Set up fzf to go through hidden files
+  # and use a fast rg backend
+  environment.variables.FZF_DEFAULT_COMMAND = "rg --files --hidden -g='!.git'";
+  environment.variables.FZF_CTRL_T_COMMAND  = "rg --files --hidden -g='!.git'";
+
+  services.openssh = {
+    enable                          = true;
+    passwordAuthentication          = false;
     challengeResponseAuthentication = false;
-    permitRootLogin = "no";
+    permitRootLogin                 = "no";
   };
 
   networking.firewall = {
-    allowPing = true;
-    rejectPackets = true;
+    allowPing       = true;
+    rejectPackets   = true;
     allowedTCPPorts = [ 3000 ] ;
   };
 
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kevin = {
+    uid          = 1000;
     isNormalUser = true;
-    home = "/home/kevin";
-    description = "Kevin Griffin";
-    extraGroups = [ "wheel" "dialout" ];
-    uid = 1000;
+    home         = "/home/kevin";
+    description  = "Kevin Griffin";
+    extraGroups  = [ "wheel" "dialout" ];
   };
 
   users.defaultUserShell = "/run/current-system/sw/bin/fish";
-
-
-  # This value determines the NixOS release with which your system is to be
-  # compatible, in order to avoid breaking some software such as database
-  # servers. You should change this only after NixOS release notes say you
-  # should.
 }
