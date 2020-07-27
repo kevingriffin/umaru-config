@@ -1,12 +1,10 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 let
-  unstablePkgs = import <nixpkgs-unstable> {};
-
-  weechat = unstablePkgs.weechat.override {
+  weechat = pkgs.weechat.override {
     configure = { availablePlugins, ... }: {
-      scripts = [ unstablePkgs.weechatScripts.weechat-matrix ];
+      scripts = [ pkgs.weechatScripts.weechat-matrix ];
       plugins = [
-        (availablePlugins.python.withPackages (ps: [ unstablePkgs.weechatScripts.weechat-matrix ]))
+        (availablePlugins.python.withPackages (ps: [ pkgs.weechatScripts.weechat-matrix ]))
       ];
     };
   };

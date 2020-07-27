@@ -1,8 +1,5 @@
-{ stdenv, lib, config, pkgs, ... }:
+{ config, pkgs, unstablePkgs, ... }:
 
-let
-  unstablePkgs = import<nixpkgs-unstable> {};
-in
 {
   environment.systemPackages = with pkgs; [
     unstablePkgs.ruby

@@ -1,20 +1,44 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstablePkgs, ... }:
 
 {
   imports = [
     ../modules/preboot-ssh.nix
     ../modules/eikaiwa
-    ../modules/ruby-development.nix
     ../modules/lorri.nix
-    ../modules/weechat.nix
     ../modules/vpn.nix
-   ];
+    (import ../modules/ruby-development.nix { inherit config pkgs unstablePkgs; })
+    (import ../modules/weechat.nix          { inherit config; pkgs = unstablePkgs; })
+    (import ../module/swift.nix             { pkgs = unstablePkgs; })
+  ];
 
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable      = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.device              = "nodev";
+
   boot.supportedFilesystems = ["zfs"];
   boot.zfs.enableUnstable = true;
-  boot.loader.grub.device = "nodev";
+
+  boot.initrd.luks.devices = {
+    root1 = {
+      device = "/dev/disk/by-uuid/8537440e-66a3-4696-a9cc-69493e8e97f9";
+      allowDiscards = true;
+    };
+    root3 = {
+      device = "/dev/disk/by-uuid/fa6207ba-af6f-4c9d-b3c6-db9062ce4608";
+      allowDiscards = true;
+    };
+  };
+
+  boot.kernelParams = [ "nomodeset" ];
+  boot.kernel.sysctl = {
+    "fs.inotify.max_user_watches" = "1048576";
+  };
+
+  hardware.cpu.intel.updateMicrocode = true;
+
+  console.packages   = with pkgs; [ source-code-pro ];
+  console.font       = "source-code-pro";
+  console.keyMap     = "jp106";
 
   fonts.fonts = with pkgs; [
     carlito
@@ -26,14 +50,10 @@
 
   time.timeZone = "Asia/Tokyo";
 
-  console.packages   = with pkgs; [ source-code-pro ];
-  console.font       = "source-code-pro";
-  console.keyMap     = "jp106";
+  security.acme.email       = "me@kevin.jp";
+  security.acme.acceptTerms = true;
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
-
-  security.acme.email = "me@kevin.jp";
-  security.acme.acceptTerms = true;
 
   services.nginx = {
     enable = true;
@@ -52,30 +72,6 @@
     };
   };
 
-  boot.initrd.luks.devices = {
-    root1 = {
-      device = "/dev/disk/by-uuid/8537440e-66a3-4696-a9cc-69493e8e97f9";
-      allowDiscards = true;
-    };
-    root3 = {
-      device = "/dev/disk/by-uuid/fa6207ba-af6f-4c9d-b3c6-db9062ce4608";
-      allowDiscards = true;
-    };
-  };
-
-
-  boot.kernelParams = [ "nomodeset" ];
-  boot.kernel.sysctl = {
-    "fs.inotify.max_user_watches" = "1048576";
-  };
-
-  kevin.preboot-ssh = {
-    enable = true;
-    identityFile = "/home/kevin/identities/ssh.json";
-  };
-
-  hardware.cpu.intel.updateMicrocode = true;
-
   environment.systemPackages = with pkgs; [
      phraseapp_updater
      seeing_is_believing
@@ -83,10 +79,24 @@
      opensc
   ];
 
-
   services.prometheus.exporters.node = {
     enable = true;
     openFirewall = true;
+  };
+
+  # Set up opensc each activation with
+  # newly built version
+  system.activationScripts.userActivationScripts =
+          ''
+            mkdir -p /usr/lib
+            cp ${pkgs.opensc}/lib/opensc-pkcs11.so /usr/lib
+          '';
+
+  environment.variables.OPENSC="/usr/lib/opensc-pkcs11.so";
+
+  kevin.preboot-ssh = {
+    enable = true;
+    identityFile = "/home/kevin/identities/ssh.json";
   };
 
   kevin.iknow-vpn = {
@@ -102,16 +112,9 @@
   };
 
 
-  system.activationScripts.userActivationScripts =
-          ''
-            mkdir -p /usr/lib
-            cp ${pkgs.opensc}/lib/opensc-pkcs11.so /usr/lib
-          '';
-
-  environment.variables.OPENSC="/usr/lib/opensc-pkcs11.so";
-
   networking.hostName = "erika";
   networking.hostId = "a5621c46";
+
   services.pcscd.enable = true;
 
   system.autoUpgrade = {
