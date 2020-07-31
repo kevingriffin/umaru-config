@@ -182,8 +182,10 @@ in
   networking.mape.portForwards = with hosts.v4; [
     { protocol = "tcp"; port = 30305; to = { host = umaru;  port = 32400; }; } # plex ipv4
     { protocol = "tcp"; port = 9826;  to = { host = umaru;  port = 9826;  }; } # qbittorrent
+    { protocol = "tcp"; port = 8883;  to = { host = sesame; port = 50798; }; } # sesame wifi
     { protocol = "udp"; port = 9826;  to = { host = umaru;  port = 9826;  }; } # qbittorrent
     { protocol = "udp"; port = 50798; to = { host = flonne; port = 50798; }; } # wireguard
+    { protocol = "udp"; port = 123;   to = { host = sesame; port = 50798; }; } # sesame wifi
   ];
 
   networking.mape.portRangeForwards = [

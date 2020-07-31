@@ -34,6 +34,7 @@ in
       dhcp-host=90:48:9A:85:70:1A,192.168.11.94 # tvb928217d081b
       dhcp-host=00:0E:C6:E5:58:F4,192.168.11.98
       dhcp-host=00:22:CF:F6:C4:C9,192.168.11.96
+      dhcp-host=38:56:10:00:88:89,192.168.11.70 # sesame wifi
 
 
       dhcp-option=option:router,${ipv4Address}
