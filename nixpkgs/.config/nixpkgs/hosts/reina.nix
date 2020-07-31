@@ -2,7 +2,7 @@
 
 {
   imports = [
-   (import ../modules/ruby-development.nix { inherit unstablePkgs; })
+    (import ../modules/ruby-development.nix { inherit config pkgs unstablePkgs; })
   ];
 
 

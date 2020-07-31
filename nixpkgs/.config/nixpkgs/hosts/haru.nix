@@ -3,8 +3,8 @@
 {
 
   imports = [
-   (import ../modules/ruby-development.nix { inherit config pkgs unstablePkgs; })
-   (import ../modules/weechat.nix { inherit config; pkgs = unstablePkgs; })
+    (import ../modules/ruby-development.nix { inherit config pkgs unstablePkgs; })
+    (import ../modules/weechat.nix { inherit config; pkgs = unstablePkgs; })
     ../darwin-modules/lorri.nix
   ];
 
