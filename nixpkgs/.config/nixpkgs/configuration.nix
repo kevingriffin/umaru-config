@@ -5,13 +5,13 @@
 { config, pkgs, ... }:
 
 let
-  unstablePkgs = import<nixpkgs-unstable> {};
+  unstablePkgs = import<nixpkgs-unstable> { config.allowUnfree = true; };
 in
 {
   imports = [
     ./hardware-configuration.nix
-    (import ./modules/base-packages.nix { inherit config pkgs unstablePkgs options; })
-    (import ./local.nix { inherit config pkgs unstablePkgs options; })
+    (import ./modules/base-packages.nix { inherit config pkgs unstablePkgs; })
+    (import ./local.nix { inherit config pkgs unstablePkgs; })
   ];
 
   nix.useSandbox = true;

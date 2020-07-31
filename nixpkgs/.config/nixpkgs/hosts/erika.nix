@@ -8,7 +8,6 @@
     ../modules/vpn.nix
     (import ../modules/ruby-development.nix { inherit config pkgs unstablePkgs; })
     (import ../modules/weechat.nix          { inherit config; pkgs = unstablePkgs; })
-    (import ../module/swift.nix             { pkgs = unstablePkgs; })
   ];
 
   boot.loader.systemd-boot.enable      = true;
