@@ -124,6 +124,7 @@ in
       elements = with hosts.v6; [
         haru
         erika
+        umaru
       ];
     };
 
