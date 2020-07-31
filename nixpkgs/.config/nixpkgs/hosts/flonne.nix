@@ -18,6 +18,11 @@
 
   services.udisks2.enable = false;
 
+  services.prometheus.exporters.node = {
+    enable = true;
+    openFirewall = true;
+  };
+
   networking.hostName = "flonne"; # Define your hostname.
   networking.firewall.allowedTCPPorts = [ 22 17569 ];
 

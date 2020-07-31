@@ -20,6 +20,11 @@
 
   services.openssh.enable = true;
 
+  services.prometheus.exporters.node = {
+    enable = true;
+    openFirewall = true;
+  };
+
   virtualisation.vmware.guest = {
     enable = true;
     headless = true;

@@ -75,6 +75,7 @@ in
       ip6 saddr { 240e:f7:4f01:c::/64, 240e:d9:d800:200::/64 } counter drop comment "china probes"
       iif ${internalIf} ct state new accept
       tcp dport 22 ip6 daddr ${pleinair} counter accept;
+      tcp dport 9100 ip6 daddr ${pleinair} counter accept;
     '';
 
     tables.filter.chains.forward.rules = ''
@@ -150,6 +151,7 @@ in
         erika
         umaru
         haru
+        flonne
       ];
     };
 
