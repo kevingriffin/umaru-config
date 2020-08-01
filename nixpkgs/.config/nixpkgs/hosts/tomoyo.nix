@@ -57,9 +57,34 @@
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
+    recommendedGzipSettings  = true;
+
+    virtualHosts."kevin.jp" = {
+      enableACME = true;
+      forceSSL   = true;
+
+      root = "/var/www/kevin.jp";
+
+      locations."/" = {
+        index    = "index.html";
+        tryFiles =  "$uri $uri.html $uri/ =404";
+      };
+
+      extraConfig = ''
+        rewrite ^(.+)/+$ $1 permanent;
+
+        location ~* \.(jpg|jpeg|png|gif|ico)$ {
+          expires 30d;
+        }
+        location ~* \.(css|js)$ {
+          expires 7d;
+        }
+        '';
+    };
+
     virtualHosts."tomoyo.kevin.jp" = {
       enableACME = true;
-      forceSSL = true;
+      forceSSL   = true;
 
       locations."/" = {
         proxyPass = "http://localhost:3000";
