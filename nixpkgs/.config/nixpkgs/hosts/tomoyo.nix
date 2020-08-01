@@ -5,6 +5,7 @@
     ../modules/preboot-ssh.nix
     ../modules/vpn.nix
     ../modules/prometheus.nix
+    ../modules/matrix-synapse.nix
    ];
 
   boot.loader.grub.enable  = true;
