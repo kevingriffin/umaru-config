@@ -6,6 +6,7 @@
     ../modules/vpn.nix
     ../modules/prometheus.nix
     ../modules/matrix-synapse.nix
+    ../modules/znc.nix
    ];
 
   boot.loader.grub.enable  = true;
