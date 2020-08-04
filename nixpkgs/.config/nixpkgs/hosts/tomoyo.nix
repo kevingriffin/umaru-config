@@ -6,6 +6,7 @@
     ../modules/vpn.nix
     ../modules/prometheus.nix
     ../modules/matrix-synapse.nix
+    ../modules/borg-backup
     ../modules/znc.nix
    ];
 
@@ -36,6 +37,22 @@
 
   networking.hostName = "tomoyo";
   networking.firewall.allowedTCPPorts = [ 80 443 ];
+
+  services.borgBackup = let
+    secrets = import ../secrets.nix;
+  in
+  {
+    enable = true;
+    paths = [/home/git];
+    excludedGlobs = [ ".*" ];
+    remoteRepo = {
+      host         = "hk-s020.rsync.net";
+      user         = "20504";
+      path         = "tomoyo/git-backups";
+      borgPath     = "borg1";
+      borgPassword = secrets.borg-password;
+    };
+  };
 
   services.prometheus.exporters.node = {
     enable       = true;
