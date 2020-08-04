@@ -1,4 +1,5 @@
 {
+  borg-password                      = "";
   pushover-token                     = "";
   pushover-user-key                  = "";
   sesame-token                       = "";
@@ -6,4 +7,7 @@
   mosquitto-hass-ir-hashed-password  = "";
   mosquitto-adapter-hashed-password  = "";
   matrix-synapse-registration-secret = "";
+  znc-hash-password                  = "";
+  znc-salt                           = "";
+  znc-freenode-password              = "";
 }
