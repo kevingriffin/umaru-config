@@ -8,6 +8,12 @@
     ../darwin-modules/lorri.nix
   ];
 
+
+  environment.systemPackages = with pkgs; [
+     id3v2
+     pythonPackages.eyeD3
+  ];
+
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;

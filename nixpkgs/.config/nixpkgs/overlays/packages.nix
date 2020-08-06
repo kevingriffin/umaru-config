@@ -9,8 +9,10 @@ self: super: {
   csshx = super.callPackage ./packages/csshx.nix {};
   cfn-lint = self.python2.pkgs.callPackage ./packages/cfn-lint.nix {};
   cfn_flip = self.python2.pkgs.callPackage ./packages/cfn_flip.nix {};
+  hex = super.callPackage ./packages/hex.nix {};
   kube-ps1 = super.callPackage ./packages/kube-ps1.nix {};
   ndppd = super.callPackage ./packages/ndppd {};
+  nomino = super.callPackage ./packages/nomino.nix {};
   lorri = let
     src = builtins.fetchGit {
       url = "https://github.com/target/lorri";

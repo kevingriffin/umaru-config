@@ -6,19 +6,24 @@
      ag
      age
      unstablePkgs.aria2
+     unstablePkgs.bat
      bind
      colordiff
+     unstablePkgs.gitAndTools.delta
      direnv
+     unstablePkgs.diskonaut
+     fd
      fzf
      gitAndTools.diff-so-fancy
      unstablePkgs.gitAndTools.hub
      gitFull
      git-lfs
+     unstablePkgs.gitAndTools.gitui
      gnumake
      gnupg
+     hex
      htop
      httpie
-     id3v2
      jq
      jrnl
      lego
@@ -26,8 +31,10 @@
      unstablePkgs.neovim
      mosh
      nmap
+     nomino
      overmind
      pfetch
+     procs
      ranger
      ripgrep
      rsync
@@ -42,6 +49,7 @@
      unzip
      wget
      wireshark
+     unstablePkgs.xsv
      unstablePkgs.youtube-dl
      yank
      unstablePkgs.ytop
