@@ -22,6 +22,10 @@
 
       User.kevin = {
         Admin = true;
+        AutoClearChanBuffer = false;
+        AutoClearQueryBuffer = false;
+        Buffer = 1000;
+        ChanBufferSize = 1000;
 
         Pass.password = {
           Method = "sha256";
