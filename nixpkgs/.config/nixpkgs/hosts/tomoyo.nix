@@ -84,12 +84,12 @@
       root = "/var/www/kevin.jp";
 
       locations."/" = {
-        index    = "index.html";
-        tryFiles =  "$uri $uri.html $uri/ =404";
+        index    =  "$lang/index.html";
+        tryFiles =  "$lang/$uri $lang/$uri.html $uri $uri.html $uri/ =404";
       };
 
       extraConfig = ''
-        rewrite ^(.+)/+$ $1 permanent;
+        charset UTF-8;
 
         location ~* \.(jpg|jpeg|png|gif|ico)$ {
           expires 30d;
@@ -99,6 +99,14 @@
         }
         '';
     };
+
+    commonHttpConfig = ''
+      map $http_accept_language $lang {
+        default en;
+        "~*^((|,)\s*(?!(ja|en))\w+(-\w+)?(;q=[\d\.]+)?)*(|,)\s*en\b" en;
+        "~*^((|,)\s*(?!(ja|en))\w+(-\w+)?(;q=[\d\.]+)?)*(|,)\s*ja\b" ja;
+      }
+    '';
 
     virtualHosts."tomoyo.kevin.jp" = {
       enableACME = true;
