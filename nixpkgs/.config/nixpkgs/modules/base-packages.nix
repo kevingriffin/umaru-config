@@ -29,6 +29,7 @@
      lego
      lsof
      unstablePkgs.neovim
+     unstablePkgs.nginx
      mosh
      nmap
      nomino
@@ -42,6 +43,7 @@
      sshpass
      stow
      tcpdump
+     unstablePkgs.tmate
      tig
      tmux
      tmux-cssh
