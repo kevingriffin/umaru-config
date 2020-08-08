@@ -1,11 +1,11 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ../modules/hass.nix
-      ../modules/vpn.nix
-    ];
+  imports = [
+    ../modules/borg-backup
+    ../modules/hass.nix
+    ../modules/vpn.nix
+  ];
 
   boot.loader.grub.enable  = true;
   boot.loader.grub.version = 2;
@@ -17,6 +17,22 @@
   time.timeZone = "Asia/Tokyo";
 
   services.udisks2.enable = false;
+
+  services.borgBackup = let
+    secrets = import ../secrets.nix;
+  in
+  {
+    enable = true;
+    paths = [/var/lib/hass];
+    excludedGlobs = [ "configuration.yaml" ];
+    remoteRepo = {
+      host         = "hk-s020.rsync.net";
+      user         = "20504";
+      path         = "flonne";
+      borgPath     = "borg1";
+      borgPassword = secrets.borg-password;
+    };
+  };
 
   services.prometheus.exporters.node = {
     enable = true;
