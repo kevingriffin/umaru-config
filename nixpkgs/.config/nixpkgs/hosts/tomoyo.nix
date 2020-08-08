@@ -43,7 +43,7 @@
   in
   {
     enable = true;
-    paths = [/home/git];
+    paths = [ "/home/git" ];
     excludedGlobs = [ ".*" ];
     remoteRepo = {
       host         = "hk-s020.rsync.net";

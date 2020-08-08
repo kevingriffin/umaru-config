@@ -23,7 +23,7 @@
   in
   {
     enable = true;
-    paths = [/var/lib/hass];
+    paths = [ "/var/lib/hass" ];
     excludedGlobs = [ "configuration.yaml" ];
     remoteRepo = {
       host         = "hk-s020.rsync.net";
