@@ -42,7 +42,7 @@ in with lib; {
     };
 
     defaultSnapshotTag = mkOption {
-      type    = types.string;
+      type    = types.str;
       default = "default";
       example = literalExample "daily";
       description = ''
@@ -52,7 +52,7 @@ in with lib; {
     };
 
     user = mkOption {
-      type    = types.string;
+      type    = types.str;
       example = "backup";
       default = "root";
       description = ''Name of the system user under which to run backup services.'';
@@ -66,7 +66,7 @@ in with lib; {
     };
 
     prepScripts = mkOption {
-      type    = types.listOf types.string;
+      type    = types.listOf types.str;
       default = [];
       example = literalExample [ "mysqldump -u root --all-databases > /root/mysql-dump.sql" ];
       description = ''
@@ -76,7 +76,7 @@ in with lib; {
     };
 
     excludedGlobs = mkOption {
-      type    = types.listOf types.string;
+      type    = types.listOf types.str;
       default = [];
       example = literalExample [ ".git/**" ];
       description = ''
@@ -116,7 +116,7 @@ in with lib; {
     };
 
     compression = mkOption {
-      type    = types.string;
+      type    = types.str;
       default = "lzma,5";
       example = "lzma,5";
       description = ''Compression setting for borg-backup to use on snapshots.'';
@@ -126,32 +126,32 @@ in with lib; {
       type = types.submodule {
         options = {
           host = mkOption {
-            type = types.string;
+            type = types.str;
             example = literalExample "rsync.net";
             description = ''Host name of remote borg repo.'';
           };
 
           user = mkOption {
-            type = types.string;
+            type = types.str;
             example = literalExample "backup-user";
             description = ''User name for logging in to remote server.'';
           };
 
           path = mkOption {
-            type = types.string;
+            type = types.str;
             example = literalExample "./backup-data";
             description = ''Path on remote server where backup repo should be stored.'';
           };
 
           borgPath = mkOption {
-            type    = types.string;
+            type    = types.str;
             default = "borg";
             example = "borg";
             description = ''Path or name of borg backup executable on remote server.'';
           };
 
           borgPassword = mkOption {
-            type = types.string;
+            type = types.str;
             example = literalExample "xyz";
             description = ''Password for encrypting borg repo.'';
           };
@@ -160,7 +160,7 @@ in with lib; {
     };
 
     timerSetting = mkOption {
-      type    = types.string;
+      type    = types.str;
       default = "*-*-* 10:00:00";  # 10am UTC == 2am PST
       example = "*-*-* 10:00:00";
       description = ''systemd timer setting for periodically running backups.'';
