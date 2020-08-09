@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstablePkgs, ... }:
 
 {
   imports = [
@@ -52,6 +52,12 @@
       borgPath     = "borg1";
       borgPassword = secrets.borg-password;
     };
+  };
+
+  services.unifi = {
+    enable       = true;
+    unifiPackage = unstablePkgs.unifiStable;
+    openPorts    = true;
   };
 
   services.prometheus.exporters.node = {
@@ -129,6 +135,28 @@
         extraConfig = ''
           rewrite  ^/grafana/(.*)  /$1 break;
           '';
+      };
+    };
+
+    virtualHosts."unifi.kevin.jp" = {
+      enableACME = true;
+      forceSSL   = true;
+      locations."/" = {
+        proxyPass       = "https://localhost:8443";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_ssl_verify off;
+        '';
+      };
+
+      locations."/api" = {
+        proxyPass       = "https://localhost:8443/api";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_ssl_verify off;
+          proxy_set_header Origin  "";
+          proxy_set_header Referer "";
+        '';
       };
     };
   };
