@@ -12,6 +12,8 @@ self: super: {
   hex = super.callPackage ./packages/hex.nix {};
   kube-ps1 = super.callPackage ./packages/kube-ps1.nix {};
   ndppd = super.callPackage ./packages/ndppd {};
+  linx-server = super.callPackage ./packages/linx-server.nix {};
+  go-rice = super.callPackage ./packages/go-rice.nix {};
   nomino = super.callPackage ./packages/nomino.nix {};
   lorri = let
     src = builtins.fetchGit {

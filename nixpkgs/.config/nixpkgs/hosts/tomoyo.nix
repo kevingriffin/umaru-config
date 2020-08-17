@@ -8,6 +8,7 @@
     ../modules/matrix-synapse.nix
     ../modules/borg-backup
     ../modules/znc.nix
+    ../modules/linx-server.nix
    ];
 
   boot.loader.grub.enable  = true;
@@ -37,6 +38,8 @@
 
   networking.hostName = "tomoyo";
   networking.firewall.allowedTCPPorts = [ 80 443 ];
+
+  kevin.linx-server.enable = true;
 
   services.borgBackup = let
     secrets = import ../secrets.nix;
