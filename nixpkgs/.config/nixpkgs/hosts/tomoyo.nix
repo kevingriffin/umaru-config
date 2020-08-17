@@ -46,7 +46,7 @@
   in
   {
     enable = true;
-    paths = [ "/home/git" ];
+    paths = [ "/home/git" "/etc/nixos" "/var/www" ];
     excludedGlobs = [ ".*" ];
     remoteRepo = {
       host         = "hk-s020.rsync.net";
