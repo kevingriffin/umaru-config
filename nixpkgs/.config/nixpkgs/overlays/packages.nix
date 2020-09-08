@@ -15,12 +15,6 @@ self: super: {
   linx-server = super.callPackage ./packages/linx-server.nix {};
   go-rice = super.callPackage ./packages/go-rice.nix {};
   nomino = super.callPackage ./packages/nomino.nix {};
-  lorri = let
-    src = builtins.fetchGit {
-      url = "https://github.com/target/lorri";
-      ref = "rolling-release";
-      };
-      in import src { inherit src; };
   python38 = super.python38.override {
     packageOverrides = pythonSelf: pythonSuper: {
       apsw = pythonSuper.callPackage ./packages/apsw_python.nix {};
