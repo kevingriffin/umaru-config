@@ -8,6 +8,7 @@
      unstablePkgs.aria2
      unstablePkgs.bat
      bind
+     unstablePkgs.bottom
      colordiff
      unstablePkgs.gitAndTools.delta
      direnv
@@ -54,7 +55,6 @@
      unstablePkgs.xsv
      unstablePkgs.youtube-dl
      yank
-     unstablePkgs.ytop
      unstablePkgs.yubikey-manager
    ];
 }
