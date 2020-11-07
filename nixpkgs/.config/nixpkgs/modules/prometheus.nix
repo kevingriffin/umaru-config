@@ -43,16 +43,26 @@
       }
       {
         job_name = "node";
-        static_configs = [{
-          targets = [
-            "localhost:9100"
-            "erika.kevin.jp:9100"
-            "umaru.kevin.jp:9100"
-            "haru.kevin.jp:9100"
-            "pleinair.kevin.jp:9100"
-            "flonne.kevin.jp:9100"
-          ];
-        }];
+        static_configs = [
+          {
+            targets = [
+              "localhost:9100"
+              "erika.kevin.jp:9100"
+              "haru.kevin.jp:9100"
+              "pleinair.kevin.jp:9100"
+              "flonne.kevin.jp:9100"
+            ];
+          }
+
+          {
+            targets = [
+              "umaru.kevin.jp:9100"
+            ];
+            labels =  {
+              transient = "yes";
+            };
+          }
+        ];
       }
     ];
 
