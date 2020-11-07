@@ -9,6 +9,7 @@
     ../modules/borg-backup
     ../modules/znc.nix
     ../modules/linx-server.nix
+    ../modules/miniflux.nix
    ];
 
   boot.loader.grub.enable  = true;
