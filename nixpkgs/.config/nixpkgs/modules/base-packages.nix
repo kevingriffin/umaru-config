@@ -14,7 +14,7 @@
      direnv
      unstablePkgs.diskonaut
      fd
-     fzf
+     unstablePkgs.fzf
      gitAndTools.diff-so-fancy
      unstablePkgs.gitAndTools.hub
      gitFull
