@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   unstablePkgs = import<nixpkgs-unstable> { config.allowUnfree = true; };
@@ -11,7 +11,7 @@ in
   imports = [
     ./hardware-configuration.nix
     (import ./modules/base-packages.nix { inherit config pkgs unstablePkgs; })
-    (import ./local.nix { inherit config pkgs unstablePkgs; })
+    (import ./local.nix { inherit config pkgs lib unstablePkgs; })
   ];
 
   nix.useSandbox = true;
