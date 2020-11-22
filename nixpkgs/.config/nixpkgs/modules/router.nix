@@ -1,12 +1,9 @@
 { config, lib, pkgs, ... }:
 let
-  internalIf = "ens224";
-  upstreamIf = "ens192";
+  inherit (import ../router-constants.nix) upstreamIf internalIf v4Address v6Address brAddress lowPort highPort local4Network;
   hosts = import ../hosts.nix;
 in
 {
-  # TODO: determine which of these actually matter.
-  # It started working as soon as the duid was changed.
   nixpkgs.overlays = [ (self: super: {
     dhcpcd = super.dhcpcd.overrideAttrs (attrs: {
       configureFlags = (attrs.configureFlags or []) ++ [ "--disable-auth" ];
@@ -14,18 +11,17 @@ in
     });
   }) ];
 
-  # TODO: this can't work
   networking.firewall.rejectPackets = true;
 
   networking.mape.tunnel = {
     enable = true;
     upstreamInterface = upstreamIf;
-    v4 = "133.200.50.225";
-    v6 = "2404:7a80:32e1:6600:85:c832:e100:6600";
-    br = "2001:260:700:1::1:275";
+    v4 = v4Address;
+    v6 = v6Address;
+    br = brAddress;
     ports = {
-      low = 5728;
-      high = 63087;
+      low  = lowPort;
+      high = highPort;
     };
   };
 
@@ -56,17 +52,8 @@ in
 
     networks.internal = {
       matchConfig.Name = internalIf;
-      networkConfig.Address = "192.168.11.1/24";
+      networkConfig.Address = local4Network;
       networkConfig.IPForward = "yes";
-      routes = with hosts.v6; [
-        {
-          routeConfig = {
-            Destination = "2404:7a80:32e1:6601::/64";
-            Gateway = flonne;
-            GatewayOnLink = "yes";
-          };
-        }
-      ];
     };
   };
 
@@ -102,7 +89,6 @@ in
 
       tcp dport 22             ip6 daddr @ssh-hosts counter accept;
       tcp dport 32400          ip6 daddr @plex-hosts counter accept;
-      tcp dport 50337          ip6 daddr @wireguard-hosts counter accept;
       tcp dport 9100           ip6 daddr @prometheus-hosts counter accept;
 
       tcp dport { 80, 443 }    ip6 daddr @web-hosts counter accept;
@@ -113,11 +99,9 @@ in
       type = "ipv6_addr";
       elements = with hosts.v6; [
         umaru
-        flonne
         haru
         erika
         makoto
-        bigsur
       ];
     };
 
@@ -138,20 +122,12 @@ in
       ];
     };
 
-    tables.filter.sets.hass-hosts = {
-      type = "ipv6_addr";
-      elements = with hosts.v6; [
-        flonne
-      ];
-    };
-
     tables.filter.sets.prometheus-hosts = {
       type = "ipv6_addr";
       elements = with hosts.v6; [
         erika
         umaru
         haru
-        flonne
       ];
     };
 
@@ -159,13 +135,6 @@ in
       type = "ipv6_addr";
       elements = with hosts.v6; [
         umaru
-      ];
-    };
-
-    tables.filter.sets.wireguard-hosts = {
-      type = "ipv6_addr";
-      elements = with hosts.v6; [
-        flonne
       ];
     };
 
