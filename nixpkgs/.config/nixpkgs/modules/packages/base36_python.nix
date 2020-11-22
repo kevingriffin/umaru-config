@@ -1,17 +1,17 @@
 { lib, buildPythonPackage, fetchPypi, zeroconf, pythonPackages}:
 
 buildPythonPackage rec {
-  pname = "bravia_tv";
-  version = "1.0.6";
+  pname = "base36";
+  version = "0.1.1";
 
   src = fetchPypi {
     inherit version pname;
-    sha256 = "1dqj5fcq1d58c5lsm2bh7ng1fvrdwl14m12brw5g5mzh7sqpsjh4";
+    sha256 = "15hs1h3ybvyi3z151a2wzwr653b3z56ha0hi9byxb6s9qn1if8kg";
   };
 
   doCheck = false;
 
   propagatedBuildInputs = [
-    pythonPackages.requests
+    # pythonPackages.requests
   ];
 }

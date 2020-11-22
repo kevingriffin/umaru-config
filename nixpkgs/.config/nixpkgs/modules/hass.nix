@@ -1,45 +1,28 @@
-{ config, lib, pkgs, ... }: {
+{ config, pkgs, unstablePkgs, ... }:
+let
+  pinnedPkgs = import (builtins.fetchTarball {
+    url = "https://releases.nixos.org/nixpkgs/nixpkgs-21.03pre251181.dd1b7e377f6/nixexprs.tar.xz";
+    sha256 = "1xr5v42ww1wq6zlryxwnk4q80bh47zrnl575jl11npqbrzci52w1";
+  }) {};
+in
+{
   imports = [
     (builtins.fetchGit {
       url = "https://github.com/thefloweringash/hass_ir_adapter";
       ref = "master";
-      rev = "cf77c16c268504352c97bf03959bb6d45840ca0c";
+      rev = "3ad4405119cc10b055dd9d5945c4f291e0f714ae";
     } + "/nix/module.nix")
   ];
 
-  users.groups.ssl-cert = {
-    members = [
-      config.services.nginx.user
-      "mosquitto"
-    ];
-  };
-
   security.acme.email = "me@kevin.jp";
   security.acme.acceptTerms = true;
-
-  security.acme.certs = {
-    "hass.kevin.jp" = {
-      allowKeysForGroup = true;
-      group = "ssl-cert";
-      dnsProvider = "cloudflare";
-      credentialsFile = "/var/secrets/cloudflare";
-    };
-
-    "mqtt.kevin.jp" = {
-      allowKeysForGroup = true;
-      group = "ssl-cert";
-      dnsProvider = "cloudflare";
-      credentialsFile = "/var/secrets/cloudflare";
-    };
-  };
 
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
     virtualHosts."hass.kevin.jp" = {
       forceSSL = true;
-      sslCertificate    = "${config.security.acme.certs."hass.kevin.jp".directory}/cert.pem";
-      sslCertificateKey = "${config.security.acme.certs."hass.kevin.jp".directory}/key.pem";
+      enableACME = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:8123";
         proxyWebsockets = true;
@@ -47,8 +30,7 @@
     };
     virtualHosts."mqtt.kevin.jp" = {
       forceSSL = true;
-      sslCertificate    = "${config.security.acme.certs."mqtt.kevin.jp".directory}/cert.pem";
-      sslCertificateKey = "${config.security.acme.certs."mqtt.kevin.jp".directory}/key.pem";
+      enableACME = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:1883";
         proxyWebsockets = true;
@@ -65,11 +47,7 @@
     allowAnonymous = true;
     checkPasswords = true;
     ssl = {
-      enable = true;
-      host = "0.0.0.0";
-      cafile   = "${config.security.acme.certs."mqtt.kevin.jp".directory}/chain.pem";
-      certfile = "${config.security.acme.certs."mqtt.kevin.jp".directory}/cert.pem";
-      keyfile  = "${config.security.acme.certs."mqtt.kevin.jp".directory}/key.pem";
+      enable = false;
     };
 
     # Anyone can read
@@ -111,6 +89,7 @@
         "topic readwrite homeassistant/#"
         "topic read homie/#"
         "topic read sht/#"
+        "topic read tasmota/#"
       ];
       hashedPassword = secrets.mosquitto-hass-ir-hashed-password;
     };
@@ -121,6 +100,15 @@
         "topic readwrite ir/#"
         "topic read sht/#"
         "topic read homie/#"
+        "topic readwrite tasmota/#"
+      ];
+      hashedPassword = secrets.mosquitto-hass-ir-hashed-password;
+    };
+
+    users.tasmota = {
+      acl = [
+        "topic readwrite homeassistant/#"
+        "pattern readwrite tasmota/%c/#"
       ];
       hashedPassword = secrets.mosquitto-hass-ir-hashed-password;
     };
@@ -134,15 +122,18 @@
 
     hap_python = pythonPackages: pythonPackages.callPackage ./packages/hap_python.nix { };
     gatt       = pythonPackages: pythonPackages.callPackage ./packages/gatt_python.nix { };
-    homekit    = pythonPackages: pythonPackages.callPackage ./packages/homekit_python.nix { gatt = (gatt pythonPackages); };
+    fnvhash    = pythonPackages: pythonPackages.callPackage ./packages/fnvhash-python.nix { };
     pysesame2  = pythonPackages: pythonPackages.callPackage ./packages/pysesame2_python.nix { };
     bravia_tv  = pythonPackages: pythonPackages.callPackage ./packages/bravia_tv_python.nix { };
-    getmac  = pythonPackages: pythonPackages.callPackage ./packages/getmac_python.nix { };
+    aiohomekit = pythonPackages: pythonPackages.callPackage ./packages/aiohomekit_python.nix { };
+    base36     = pythonPackages: pythonPackages.callPackage ./packages/base36_python.nix { };
 
-    hassPkg = withoutTests (pkgs.home-assistant.override {
+    hassPkg = withoutTests (pinnedPkgs.home-assistant.override {
       extraPackages = ps: with ps; [
         xmltodict pexpect pyunifi paho-mqtt (hap_python ps)
-        netdisco (homekit ps) (pysesame2 ps) (bravia_tv ps) (getmac ps)
+        netdisco  (pysesame2 ps) (bravia_tv ps) (gatt ps)
+        (aiohomekit ps) (base36 ps) (fnvhash ps) pkgs.ffmpeg
+        pythonPackages.ha-ffmpeg  pythonPackages.aiohttp pythonPackages.hass-nabucasa
       ];
     });
 
@@ -194,9 +185,9 @@
       ];
 
       mqtt = {
-        broker = "localhost";
+        broker = "127.0.0.1";
         username = "hass";
-        password = secrets.mosquitto-user-hashed-password;
+        password = secrets.mosquitto-password;
         discovery = true;
       };
 
@@ -208,6 +199,8 @@
             "climate.room_1_ac"
             "climate.room_2_ac"
             "climate.room_3_ac"
+            "climate.family_room"
+            "climate.spare_room"
             "light.room_1_lights"
             "light.room_2_lights"
             "light.room_3_lights"
@@ -282,9 +275,9 @@
     enable = true;
     config = ''
       mqtt:
-        broker: tcp://localhost:1883
+        broker: tcp://127.0.0.1:1883
         username: hass_ir_adapter
-        password: ${secrets.mosquitto-user-hashed-password}
+        password: ${secrets.mosquitto-password}
       emitters:
         - id: esp1
           type: irblaster
@@ -295,6 +288,12 @@
         - id: esp3
           type: irblaster
           topic: ir/esp3/send
+        - id: tasmota_ir1
+          type: tasmota
+          topic: tasmota/ir1/cmnd
+        - id: tasmota_ir2
+          type: tasmota
+          topic: tasmota/ir2/cmnd
       aircons:
         - id: room_1_ac
           name: "Room 1 AC"
@@ -311,6 +310,22 @@
           emitter: esp3
           type: mitsubishi_rh101
           temperature_topic: sht/esp3/temp
+        - id: family_room_ac
+          name: "Family Room"
+          emitter: tasmota_ir1
+          type: tasmota_hvac
+          temperature_topic: tasmota/ir1/tele/SENSOR
+          temperature_template: |-
+            {{ value_json['SHT3X-0x45'].Temperature }}
+          vendor: MITSUBISHI_AC
+        - id: spare_room_ac
+          name: "Spare Room"
+          emitter: tasmota_ir2
+          type: tasmota_hvac
+          temperature_topic: tasmota/ir2/tele/SENSOR
+          temperature_template: |-
+            {{ value_json['SHT3X-0x45'].Temperature }}
+          vendor: MITSUBISHI_AC
       lights:
         - id: room_1_lights
           name: "Room 1 Lights"

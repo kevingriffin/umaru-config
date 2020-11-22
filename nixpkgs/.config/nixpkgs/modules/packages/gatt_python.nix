@@ -1,19 +1,19 @@
 { lib, buildPythonPackage, fetchPypi
-, dbus-python, pygobject3
+, dbus-python, pygobject3, pythonPackages
 # , zeroconf, hkdf, dbus-python, pycairo, pygobject3, cryptography, ed25519, gatt
 }:
 
 buildPythonPackage rec {
-  pname = "gatt";
-  version = "0.2.7";
+  pname = "pygatt";
+  version = "4.0.5";
 
   src = fetchPypi {
     inherit version pname;
-    sha256 = "0fjf066jixk30fr8xwfalwfnhqpr56yv0cccyypnx2qp9bi9svb2";
+    sha256 = "0z8srfghwn7ns0qyb59l454p3arhipq35mgxylz3llq35z3hwkkz";
   };
 
   propagatedBuildInputs = [
-    dbus-python pygobject3
+    dbus-python pygobject3 pythonPackages.nose pythonPackages.pyserial pythonPackages.enum-compat
     # zeroconf hkdf dbus-python pycairo pygobject3 cryptography ed25519 gatt
   ];
 }

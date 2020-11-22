@@ -5,11 +5,11 @@
 
 buildPythonPackage rec {
   pname = "HAP-python";
-  version = "2.8.1";
+  version = "3.0.0";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "0h8bjp2vf4ckh9gvd4v821gmh2jiba3z0i8h77qy0yd4qzhv1wgs";
+    sha256 = "0a0ndqscwz340p8wjf8ijhndxgsawsgqqk5n7czwcbw7qfk2wyz1";
   };
 
   propagatedBuildInputs = [
