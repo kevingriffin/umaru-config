@@ -196,14 +196,14 @@ in
 
         filter = {
           include_entities = [
-            "climate.room_1_ac"
-            "climate.room_2_ac"
-            "climate.room_3_ac"
+            "climate.bedroom"
+            "climate.living_room"
             "climate.family_room"
             "climate.spare_room"
-            "light.room_1_lights"
-            "light.room_2_lights"
-            "light.room_3_lights"
+            "climate.study"
+            "light.bedroom"
+            "light.study"
+            "light.living_room"
             "lock.front_top"
             "media_player.sony_bravia_tv"
           ];
@@ -214,51 +214,6 @@ in
         {
           platform = "sesame";
           api_key = secrets.sesame-token;
-        }
-      ];
-
-      sensor = [
-        {
-          platform = "mqtt";
-          name = "Room 1 Temperature";
-          state_topic = "sht/esp1/temp";
-          unit_of_measurement = "°C";
-          device_class = "temperature";
-        }
-        {
-          platform = "mqtt";
-          name = "Room 1 Humidity";
-          state_topic = "sht/esp1/rh";
-          unit_of_measurement = "%";
-          device_class = "humidity";
-        }
-        {
-          platform = "mqtt";
-          name = "Room 2 Temperature";
-          state_topic = "sht/esp2/temp";
-          unit_of_measurement = "°C";
-          device_class = "temperature";
-        }
-        {
-          platform = "mqtt";
-          name = "Room 2 Humidity";
-          state_topic = "sht/esp2/rh";
-          unit_of_measurement = "%";
-          device_class = "humidity";
-        }
-        {
-          platform = "mqtt";
-          name = "Room 3 Temperature";
-          state_topic = "sht/esp3/temp";
-          unit_of_measurement = "°C";
-          device_class = "temperature";
-        }
-        {
-          platform = "mqtt";
-          name = "Room 3 Humidity";
-          state_topic = "sht/esp3/rh";
-          unit_of_measurement = "%";
-          device_class = "humidity";
         }
       ];
 
@@ -279,37 +234,46 @@ in
         username: hass_ir_adapter
         password: ${secrets.mosquitto-password}
       emitters:
-        - id: esp1
-          type: irblaster
-          topic: ir/esp1/send
-        - id: esp2
-          type: irblaster
-          topic: ir/esp2/send
-        - id: esp3
-          type: irblaster
-          topic: ir/esp3/send
         - id: tasmota_ir1
           type: tasmota
           topic: tasmota/ir1/cmnd
         - id: tasmota_ir2
           type: tasmota
           topic: tasmota/ir2/cmnd
+        - id: tasmota_ir3
+          type: tasmota
+          topic: tasmota/ir3/cmnd
+        - id: tasmota_ir4
+          type: tasmota
+          topic: tasmota/ir4/cmnd
+        - id: tasmota_ir5
+          type: tasmota
+          topic: tasmota/ir5/cmnd
       aircons:
-        - id: room_1_ac
-          name: "Room 1 AC"
-          emitter: esp1
-          type: mitsubishi_rh101
-          temperature_topic: sht/esp1/temp
-        - id: room_2_ac
-          name: "Room 2 AC"
-          emitter: esp2
-          type: mitsubishi_rh101
-          temperature_topic: sht/esp2/temp
-        - id: room_3_ac
-          name: "Room 3 AC"
-          emitter: esp3
-          type: mitsubishi_rh101
-          temperature_topic: sht/esp3/temp
+        - id: living_room_ac
+          name: "Living Room"
+          emitter: tasmota_ir5
+          type: tasmota_hvac
+          temperature_topic: tasmota/ir5/tele/SENSOR
+          temperature_template: |-
+            {{ value_json['SHT3X-0x45'].Temperature }}
+          vendor: MITSUBISHI_AC
+        - id: study_ac
+          name: "Study"
+          emitter: tasmota_ir4
+          type: tasmota_hvac
+          temperature_topic: tasmota/ir4/tele/SENSOR
+          temperature_template: |-
+            {{ value_json['SHT3X-0x45'].Temperature }}
+          vendor: MITSUBISHI_AC
+        - id: bedroom_ac
+          name: "Bedroom"
+          emitter: tasmota_ir3
+          type: tasmota_hvac
+          temperature_topic: tasmota/ir3/tele/SENSOR
+          temperature_template: |-
+            {{ value_json['SHT3X-0x45'].Temperature }}
+          vendor: MITSUBISHI_AC
         - id: family_room_ac
           name: "Family Room"
           emitter: tasmota_ir1
@@ -327,20 +291,20 @@ in
             {{ value_json['SHT3X-0x45'].Temperature }}
           vendor: MITSUBISHI_AC
       lights:
-        - id: room_1_lights
-          name: "Room 1 Lights"
+        - id: bedroom_lights
+          name: "Bedroom"
           type: daiko
-          emitter: esp1
+          emitter: tasmota_ir3
           channel: 1
-        - id: room_2_lights
-          name: "Room 2 Lights"
+        - id: living_room_lights
+          name: "Living Room"
           type: daiko
-          emitter: esp2
+          emitter: tasmota_ir5
           channel: 1
-        - id: room_3_lights
-          name: "Room 3 Lights"
+        - id: study_lights
+          name: "Study"
           type: daiko
-          emitter: esp3
+          emitter: tasmota_ir4
           channel: 1
     '';
   };
