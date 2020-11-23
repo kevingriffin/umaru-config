@@ -89,7 +89,7 @@ in
         "topic readwrite homeassistant/#"
         "topic read homie/#"
         "topic read sht/#"
-        "topic read tasmota/#"
+        "topic readwrite tasmota/#"
       ];
       hashedPassword = secrets.mosquitto-hass-ir-hashed-password;
     };
@@ -204,6 +204,8 @@ in
             "light.bedroom"
             "light.study"
             "light.living_room"
+            "light.dining_room"
+            "light.family_room"
             "lock.front_top"
             "media_player.sony_bravia_tv"
           ];
@@ -220,6 +222,30 @@ in
       group = {};
       automation = {};
       script = {};
+
+      light = [
+        {
+          platform      = "mqtt";
+          name          = "Family Room";
+          payload_on    = "0,+9055-4530+570-1690C-580+545eF-585FdCgFdCgFgFdCdC-560CdC-1695CdCeFg+540gFhChCdCeFeFeFhChCeFeFhCh+565eFgFdCgFeFgFgFgFgFgFgFhCgFg+550eFhCe+695-410ChCgFdCdChCiCdCh+575";
+          payload_off   = "0,+9045-4530+580-1680+605-520C-550CgE-1655CgCd+610fIfCdCdCg+575dCdCdCgJgJgJgJ-555G-1710GcGjGcGcGc+545cGcMcGcGcMcGeFlGcGcMeFeFcGcMeFeFcMeFiFcMcMeF-1715+570-1695O-1690OqO-560M-1720+565qO-585+515";
+          command_topic = "tasmota/ir1/cmnd/irsend";
+        }
+        {
+          platform      = "mqtt";
+          name          = "Dining Room";
+          payload_on    = "0,+3420-1710+390-425C-1320CeCd+365-1345CdCdF-450+360gFhFhCdFhFgFhFgFhFhFhIhIhFhIhFhCeFgFhIgFhFgCeFhF";
+          payload_off   = "0,+3390-1735+390-425+365-1345EfCdEfCdE-450EgEfEgCdEgEgC-1320CdEf+360gCdE-455IgEgCdEgCdEfChEgChCdEfChCdC";
+          command_topic = "tasmota/ir6/cmnd/irsend";
+        }
+        {
+          platform      = "mqtt";
+          name          = "Bedroom";
+          payload_on    = "0,+9025-4525+545-590C-1720CdC-610+520fG-585CdC-1715CiChCiCeCfGiCiCdCiCdCiCiCiCeChCiCd+540iCfGfGdJhCi+570-565J-42035+8990-2240K";
+          payload_off   = "0,+9025-4520+550-585+545-1715CdCdEdE-610+520dEfCfEdEfEfCgHfCfCdCdEfCfCfEfCfCgHfCfCgHdEdEdEgHfEgH-42035+8970-2260C";
+          command_topic = "tasmota/ir3/cmnd/irsend";
+        }
+      ];
     };
   };
 
@@ -291,11 +317,6 @@ in
             {{ value_json['SHT3X-0x45'].Temperature }}
           vendor: MITSUBISHI_AC
       lights:
-        - id: bedroom_lights
-          name: "Bedroom"
-          type: daiko
-          emitter: tasmota_ir3
-          channel: 1
         - id: living_room_lights
           name: "Living Room"
           type: daiko
