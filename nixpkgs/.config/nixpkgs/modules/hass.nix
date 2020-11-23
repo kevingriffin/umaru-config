@@ -1,7 +1,7 @@
 { config, pkgs, unstablePkgs, ... }:
 let
   pinnedPkgs = import (builtins.fetchTarball {
-    url = "https://releases.nixos.org/nixpkgs/nixpkgs-21.03pre251181.dd1b7e377f6/nixexprs.tar.xz";
+    url    = "https://releases.nixos.org/nixpkgs/nixpkgs-21.03pre251181.dd1b7e377f6/nixexprs.tar.xz";
     sha256 = "1xr5v42ww1wq6zlryxwnk4q80bh47zrnl575jl11npqbrzci52w1";
   }) {};
 in
@@ -14,25 +14,25 @@ in
     } + "/nix/module.nix")
   ];
 
-  security.acme.email = "me@kevin.jp";
+  security.acme.email       = "me@kevin.jp";
   security.acme.acceptTerms = true;
 
   services.nginx = {
-    enable = true;
+    enable                   = true;
     recommendedProxySettings = true;
     virtualHosts."hass.kevin.jp" = {
-      forceSSL = true;
+      forceSSL   = true;
       enableACME = true;
       locations."/" = {
-        proxyPass = "http://127.0.0.1:8123";
+        proxyPass       = "http://127.0.0.1:8123";
         proxyWebsockets = true;
       };
     };
     virtualHosts."mqtt.kevin.jp" = {
-      forceSSL = true;
+      forceSSL   = true;
       enableACME = true;
       locations."/" = {
-        proxyPass = "http://127.0.0.1:1883";
+        proxyPass       = "http://127.0.0.1:1883";
         proxyWebsockets = true;
       };
     };
@@ -42,15 +42,14 @@ in
     secrets = import ../secrets.nix;
   in
   {
-    enable = true;
-    host = "0.0.0.0";
+    enable         = true;
+    host           = "0.0.0.0";
     allowAnonymous = true;
     checkPasswords = true;
     ssl = {
       enable = false;
     };
 
-    # Anyone can read
     aclExtraConf = ''
       topic read $SYS/#
       topic read homie/#
@@ -58,31 +57,6 @@ in
       topic read sht/#
       topic read homeassistant/#
     '';
-
-    users.esp1 = {
-      acl = [
-        "pattern read ir/%c/send"
-        "pattern readwrite sht/%c/#"
-      ];
-      hashedPassword = secrets.mosquitto-adapter-hashed-password;
-    };
-
-    users.esp2 = {
-      acl = [
-        "pattern read ir/%c/send"
-        "pattern readwrite sht/%c/#"
-      ];
-      hashedPassword = secrets.mosquitto-adapter-hashed-password;
-    };
-
-    users.esp3 = {
-      acl = [
-        "pattern read ir/%c/send"
-        "pattern readwrite sht/%c/#"
-      ];
-      hashedPassword = secrets.mosquitto-adapter-hashed-password;
-    };
-
 
     users.hass = {
       acl = [
@@ -116,7 +90,7 @@ in
 
   services.home-assistant = let
     withoutTests = pkg: pkg.overrideAttrs (attrs: {
-      doCheck = false;
+      doCheck        = false;
       doInstallCheck = false;
     });
 
@@ -140,17 +114,18 @@ in
     secrets = import ../secrets.nix;
   in
   {
-    enable = true;
-    package = hassPkg;
+    enable              = true;
+    package             = hassPkg;
     autoExtraComponents = false;
+
     config = {
       homeassistant = {
-        name = "Home";
-        latitude = 35.653063;
-        longitude = 139.669062;
-        elevation = 33;
+        name        = "Home";
+        latitude    = 35.653063;
+        longitude   = 139.669092;
+        elevation   = 33;
         unit_system = "metric";
-        time_zone = "Asia/Tokyo";
+        time_zone   = "Asia/Tokyo";
 
         customize = {
           ${"media_player.sony_bravia_tv"} = {
@@ -170,9 +145,9 @@ in
       default_config = {};
 
       http = {
-        base_url = "https://hass.kevin.jp";
+        base_url            = "https://hass.kevin.jp";
         use_x_forwarded_for = true;
-        trusted_proxies = "127.0.0.1";
+        trusted_proxies     = "127.0.0.1";
       };
 
       discovery = {};
@@ -185,9 +160,9 @@ in
       ];
 
       mqtt = {
-        broker = "127.0.0.1";
-        username = "hass";
-        password = secrets.mosquitto-password;
+        broker    = "127.0.0.1";
+        username  = "hass";
+        password  = secrets.mosquitto-password;
         discovery = true;
       };
 
@@ -215,13 +190,13 @@ in
       lock = [
         {
           platform = "sesame";
-          api_key = secrets.sesame-token;
+          api_key  = secrets.sesame-token;
         }
       ];
 
-      group = {};
+      group      = {};
       automation = {};
-      script = {};
+      script     = {};
 
       light = [
         {
@@ -330,7 +305,6 @@ in
     '';
   };
 
-  # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
     80 443     # nginx
     1883       # mqtt
