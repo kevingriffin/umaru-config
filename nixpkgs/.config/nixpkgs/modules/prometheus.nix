@@ -50,7 +50,6 @@
               "erika.kevin.jp:9100"
               "haru.kevin.jp:9100"
               "pleinair.kevin.jp:9100"
-              "flonne.kevin.jp:9100"
             ];
           }
 
