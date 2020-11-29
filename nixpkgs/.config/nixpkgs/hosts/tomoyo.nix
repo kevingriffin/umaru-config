@@ -73,8 +73,8 @@
     enable                = true;
     port                  = 4000;
     addr                  = "[::]";
-    domain                = "tomoyo.kevin.jp";
-    rootUrl               = "https://tomoyo.kevin.jp/grafana";
+    domain                = "grafana.kevin.jp";
+    rootUrl               = "https://grafana.kevin.jp";
     auth.anonymous.enable = false;
   };
 
@@ -138,6 +138,32 @@
         proxyPass   = "http://localhost:4000";
         extraConfig = ''
           rewrite  ^/grafana/(.*)  /$1 break;
+          '';
+      };
+    };
+
+    virtualHosts."grafana.kevin.jp" = {
+      enableACME = true;
+      forceSSL   = true;
+
+      locations."/" = {
+        proxyPass   = "http://localhost:4000";
+      #   extraConfig = ''
+      #     rewrite  ^/grafana/(.*)  /$1 break;
+      #     '';
+      };
+    };
+
+    virtualHosts."prometheus.kevin.jp" = {
+      enableACME = true;
+      forceSSL   = true;
+
+
+      locations."/" = {
+        proxyPass   = "http://localhost:9090";
+        extraConfig = ''
+          auth_basic           "Prometheus";
+          auth_basic_user_file /etc/nixos/.htpasswd;
           '';
       };
     };
