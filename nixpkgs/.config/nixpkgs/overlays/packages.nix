@@ -17,7 +17,7 @@ self: super: {
   nomino = super.callPackage ./packages/nomino.nix {};
   python38 = super.python38.override {
     packageOverrides = pythonSelf: pythonSuper: {
-      apsw = pythonSuper.callPackage ./packages/apsw_python.nix {};
+      apsw = pythonSelf.callPackage ./packages/apsw_python.nix {};
     };
   };
 }
