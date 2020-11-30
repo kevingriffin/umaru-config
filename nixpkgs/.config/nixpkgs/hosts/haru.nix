@@ -12,6 +12,7 @@
   environment.systemPackages = with pkgs; [
      id3v2
      pythonPackages.eyeD3
+     branchctl
   ];
 
   services.nginx = {
