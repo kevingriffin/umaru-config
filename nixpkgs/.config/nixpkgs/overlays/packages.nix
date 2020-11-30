@@ -15,6 +15,7 @@ self: super: {
   linx-server = super.callPackage ./packages/linx-server.nix {};
   go-rice = super.callPackage ./packages/go-rice.nix {};
   nomino = super.callPackage ./packages/nomino.nix {};
+  gixy   = super.gixy.overrideAttrs(attrs: { meta.platforms = super.lib.platforms.unix; });
   python38 = super.python38.override {
     packageOverrides = pythonSelf: pythonSuper: {
       apsw = pythonSelf.callPackage ./packages/apsw_python.nix {};

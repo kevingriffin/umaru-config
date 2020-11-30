@@ -4,23 +4,25 @@ with lib;
 
 let
   cfg = config.services.nginx;
+  certs = config.security.acme.certs;
+  vhostsConfigs = mapAttrsToList (vhostName: vhostConfig: vhostConfig) virtualHosts;
+  acmeEnabledVhosts = filter (vhostConfig: vhostConfig.enableACME || vhostConfig.useACMEHost != null) vhostsConfigs;
+  dependentCertNames = unique (map (hostOpts: hostOpts.certName) acmeEnabledVhosts);
   virtualHosts = mapAttrs (vhostName: vhostConfig:
     let
       serverName = if vhostConfig.serverName != null
         then vhostConfig.serverName
         else vhostName;
-      acmeDirectory = config.security.acme.directory;
+      certName = if vhostConfig.useACMEHost != null
+        then vhostConfig.useACMEHost
+        else serverName;
     in
     vhostConfig // {
-      inherit serverName;
-    } // (optionalAttrs vhostConfig.enableACME {
-      sslCertificate = "${acmeDirectory}/${serverName}/fullchain.pem";
-      sslCertificateKey = "${acmeDirectory}/${serverName}/key.pem";
-      sslTrustedCertificate = "${acmeDirectory}/${serverName}/full.pem";
-    }) // (optionalAttrs (vhostConfig.useACMEHost != null) {
-      sslCertificate = "${acmeDirectory}/${vhostConfig.useACMEHost}/fullchain.pem";
-      sslCertificateKey = "${acmeDirectory}/${vhostConfig.useACMEHost}/key.pem";
-      sslTrustedCertificate = "${acmeDirectory}/${vhostConfig.useACMEHost}/full.pem";
+      inherit serverName certName;
+    } // (optionalAttrs (vhostConfig.enableACME || vhostConfig.useACMEHost != null) {
+      sslCertificate = "${certs.${certName}.directory}/fullchain.pem";
+      sslCertificateKey = "${certs.${certName}.directory}/key.pem";
+      sslTrustedCertificate = "${certs.${certName}.directory}/chain.pem";
     })
   ) cfg.virtualHosts;
   enableIPv6 = true;
@@ -32,7 +34,6 @@ let
     proxy_set_header        X-Forwarded-Proto $scheme;
     proxy_set_header        X-Forwarded-Host $host;
     proxy_set_header        X-Forwarded-Server $host;
-    proxy_set_header        Accept-Encoding "";
   '';
 
   upstreamConfig = toString (flip mapAttrsToList cfg.upstreams (name: upstream: ''
@@ -44,8 +45,17 @@ let
     }
   ''));
 
-  configFile = pkgs.writeText "nginx.conf" ''
-    user ${cfg.user} ${cfg.group};
+  commonHttpConfig = ''
+      # The mime type definitions included with nginx are very incomplete, so
+      # we use a list of mime types from the mailcap package, which is also
+      # used by most other Linux distributions by default.
+      include ${pkgs.mailcap}/etc/nginx/mime.types;
+      include ${cfg.package}/conf/fastcgi.conf;
+      include ${cfg.package}/conf/uwsgi_params;
+  '';
+
+  configFile = pkgs.writers.writeNginxConfig "nginx.conf" ''
+    pid /run/nginx/nginx.pid;
     error_log ${cfg.logError};
     daemon off;
 
@@ -59,12 +69,10 @@ let
 
     ${optionalString (cfg.httpConfig == "" && cfg.config == "") ''
     http {
-      include ${cfg.package}/conf/mime.types;
-      include ${cfg.package}/conf/fastcgi.conf;
-      include ${cfg.package}/conf/uwsgi_params;
+      ${commonHttpConfig}
 
       ${optionalString (cfg.resolver.addresses != []) ''
-        resolver ${toString cfg.resolver.addresses} ${optionalString (cfg.resolver.valid != "") "valid=${cfg.resolver.valid}"};
+        resolver ${toString cfg.resolver.addresses} ${optionalString (cfg.resolver.valid != "") "valid=${cfg.resolver.valid}"} ${optionalString (!cfg.resolver.ipv6) "ipv6=off"};
       ''}
       ${upstreamConfig}
 
@@ -74,25 +82,31 @@ let
         tcp_nopush on;
         tcp_nodelay on;
         keepalive_timeout 65;
-        types_hash_max_size 2048;
+        types_hash_max_size 4096;
       ''}
 
       ssl_protocols ${cfg.sslProtocols};
-      ssl_ciphers ${cfg.sslCiphers};
+      ${optionalString (cfg.sslCiphers != null) "ssl_ciphers ${cfg.sslCiphers};"}
       ${optionalString (cfg.sslDhparam != null) "ssl_dhparam ${cfg.sslDhparam};"}
 
       ${optionalString (cfg.recommendedTlsSettings) ''
-        ssl_session_cache shared:SSL:42m;
-        ssl_session_timeout 23m;
-        ssl_ecdh_curve secp384r1;
-        ssl_prefer_server_ciphers on;
+        # Keep in sync with https://ssl-config.mozilla.org/#server=nginx&config=intermediate
+
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:SSL:10m;
+        # Breaks forward secrecy: https://github.com/mozilla/server-side-tls/issues/135
+        ssl_session_tickets off;
+        # We don't enable insecure ciphers by default, so this allows
+        # clients to pick the most performant, per https://github.com/mozilla/server-side-tls/issues/260
+        ssl_prefer_server_ciphers off;
+
+        # OCSP stapling
         ssl_stapling on;
         ssl_stapling_verify on;
       ''}
 
       ${optionalString (cfg.recommendedGzipSettings) ''
         gzip on;
-        gzip_disable "msie6";
         gzip_proxied any;
         gzip_comp_level 5;
         gzip_types
@@ -116,6 +130,14 @@ let
         proxy_read_timeout      90;
         proxy_http_version      1.0;
         include ${recommendedProxyConfig};
+      ''}
+
+      ${optionalString (cfg.mapHashBucketSize != null) ''
+        map_hash_bucket_size ${toString cfg.mapHashBucketSize};
+      ''}
+
+      ${optionalString (cfg.mapHashMaxSize != null) ''
+        map_hash_max_size ${toString cfg.mapHashMaxSize};
       ''}
 
       # $connection_upgrade is used for websocket proxying
@@ -153,14 +175,18 @@ let
 
     ${optionalString (cfg.httpConfig != "") ''
     http {
-      include ${cfg.package}/conf/mime.types;
-      include ${cfg.package}/conf/fastcgi.conf;
-      include ${cfg.package}/conf/uwsgi_params;
+      ${commonHttpConfig}
       ${cfg.httpConfig}
     }''}
 
     ${cfg.appendConfig}
   '';
+
+  configPath = if cfg.enableReload
+    then "/etc/nginx/nginx.conf"
+    else configFile;
+
+  execCommand = "${cfg.package}/bin/nginx -c '${configPath}'";
 
   vhosts = concatStringsSep "\n" (mapAttrsToList (vhostName: vhost:
     let
@@ -182,11 +208,12 @@ let
             then filter (x: x.ssl) defaultListen
             else defaultListen;
 
-        listenString = { addr, port, ssl, ... }:
+        listenString = { addr, port, ssl, extraParameters ? [], ... }:
           "listen ${addr}:${toString port} "
           + optionalString ssl "ssl "
           + optionalString (ssl && vhost.http2) "http2 "
           + optionalString vhost.default "default_server "
+          + optionalString (extraParameters != []) (concatStringsSep " " extraParameters)
           + ";";
 
         redirectListen = filter (x: !x.ssl) defaultListen;
@@ -234,10 +261,7 @@ let
             ssl_trusted_certificate ${vhost.sslTrustedCertificate};
           ''}
 
-          ${optionalString (vhost.basicAuthFile != null || vhost.basicAuth != {}) ''
-            auth_basic secured;
-            auth_basic_user_file ${if vhost.basicAuthFile != null then vhost.basicAuthFile else mkHtpasswd vhostName vhost.basicAuth};
-          ''}
+          ${mkBasicAuth vhostName vhost}
 
           ${mkLocations vhost.locations}
 
@@ -263,22 +287,22 @@ let
       ${optionalString (config.tryFiles != null) "try_files ${config.tryFiles};"}
       ${optionalString (config.root != null) "root ${config.root};"}
       ${optionalString (config.alias != null) "alias ${config.alias};"}
+      ${optionalString (config.return != null) "return ${config.return};"}
       ${config.extraConfig}
       ${optionalString (config.proxyPass != null && cfg.recommendedProxySettings) "include ${recommendedProxyConfig};"}
+      ${mkBasicAuth "sublocation" config}
     }
   '') (sortProperties (mapAttrsToList (k: v: v // { location = k; }) locations)));
-  mkBasicAuth = vhostName: authDef: let
-    htpasswdFile = pkgs.writeText "${vhostName}.htpasswd" (
-      concatStringsSep "\n" (mapAttrsToList (user: password: ''
-        ${user}:{PLAIN}${password}
-      '') authDef)
-    );
+
+  mkBasicAuth = name: zone: optionalString (zone.basicAuthFile != null || zone.basicAuth != {}) (let
+    auth_file = if zone.basicAuthFile != null
+      then zone.basicAuthFile
+      else mkHtpasswd name zone.basicAuth;
   in ''
     auth_basic secured;
-    auth_basic_user_file ${htpasswdFile};
-  '';
-
-  mkHtpasswd = vhostName: authDef: pkgs.writeText "${vhostName}.htpasswd" (
+    auth_basic_user_file ${auth_file};
+  '');
+  mkHtpasswd = name: authDef: pkgs.writeText "${name}.htpasswd" (
     concatStringsSep "\n" (mapAttrsToList (user: password: ''
       ${user}:{PLAIN}${password}
     '') authDef)
@@ -359,12 +383,7 @@ in
 
       preStart =  mkOption {
         type = types.lines;
-        default = ''
-          test -d ${cfg.stateDir}/logs || mkdir -m 750 -p ${cfg.stateDir}/logs
-          test `stat -c %a ${cfg.stateDir}` = "750" || chmod 750 ${cfg.stateDir}
-          test `stat -c %a ${cfg.stateDir}/logs` = "750" || chmod 750 ${cfg.stateDir}/logs
-          chown -R ${cfg.user}:${cfg.group} ${cfg.stateDir}
-        '';
+        default = "";
         description = "
           Shell commands executed before the service's nginx is started.
         ";
@@ -440,11 +459,14 @@ in
         ";
       };
 
-      stateDir = mkOption {
-        default = "/var/spool/nginx";
-        description = "
-          Directory holding all state for nginx to run.
-        ";
+      enableReload = mkOption {
+        default = false;
+        type = types.bool;
+        description = ''
+          Reload nginx when configuration file changes (instead of restart).
+          The configuration file is exposed at <filename>/etc/nginx/nginx.conf</filename>.
+          See also <literal>systemd.services.*.restartIfChanged</literal>.
+        '';
       };
 
       user = mkOption {
@@ -472,15 +494,16 @@ in
       };
 
       sslCiphers = mkOption {
-        type = types.str;
-        default = "EECDH+aRSA+AESGCM:EDH+aRSA:EECDH+aRSA:+AES256:+AES128:+SHA1:!CAMELLIA:!SEED:!3DES:!DES:!RC4:!eNULL";
-        description = "Ciphers to choose from when negotiating tls handshakes.";
+        type = types.nullOr types.str;
+        # Keep in sync with https://ssl-config.mozilla.org/#server=nginx&config=intermediate
+        default = "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384";
+        description = "Ciphers to choose from when negotiating TLS handshakes.";
       };
 
       sslProtocols = mkOption {
         type = types.str;
-        default = "TLSv1.2";
-        example = "TLSv1 TLSv1.1 TLSv1.2";
+        default = "TLSv1.2 TLSv1.3";
+        example = "TLSv1 TLSv1.1 TLSv1.2 TLSv1.3";
         description = "Allowed TLS protocol versions.";
       };
 
@@ -501,6 +524,23 @@ in
         '';
       };
 
+      mapHashBucketSize = mkOption {
+        type = types.nullOr (types.enum [ 32 64 128 ]);
+        default = null;
+        description = ''
+            Sets the bucket size for the map variables hash tables. Default
+            value depends on the processor’s cache line size.
+          '';
+      };
+
+      mapHashMaxSize = mkOption {
+        type = types.nullOr types.ints.positive;
+        default = null;
+        description = ''
+            Sets the maximum size of the map variables hash tables.
+          '';
+      };
+
       resolver = mkOption {
         type = types.submodule {
           options = {
@@ -517,6 +557,15 @@ in
               description = ''
                 By default, nginx caches answers using the TTL value of a response.
                 An optional valid parameter allows overriding it
+              '';
+            };
+            ipv6 = mkOption {
+              type = types.bool;
+              default = true;
+              description = ''
+                By default, nginx will look up both IPv4 and IPv6 addresses while resolving.
+                If looking up of IPv6 addresses is not desired, the ipv6=off parameter can be
+                specified.
               '';
             };
           };
@@ -586,6 +635,13 @@ in
     };
   };
 
+  imports = [
+    (mkRemovedOptionModule [ "services" "nginx" "stateDir" ] ''
+      The Nginx log directory has been moved to /var/log/nginx, the cache directory
+      to /var/cache/nginx. The option services.nginx.stateDir has been removed.
+    '')
+  ];
+
   config = mkIf cfg.enable {
     # TODO: test user supplied config file pases syntax test
 
@@ -630,12 +686,13 @@ in
       }
     ];
 
+
     launchd.daemons.nginx = {
       path = with pkgs; [ coreutils ];
       script =
         ''
         ${cfg.preStart}
-        ${cfg.package}/bin/nginx -c ${configFile} -p ${cfg.stateDir}
+        ${cfg.package}/bin/nginx -c ${configFile}
         '';
       serviceConfig = {
         RunAtLoad = true;
@@ -643,15 +700,52 @@ in
       };
     };
 
-    users.users = optionalAttrs (cfg.user == "nginx") (singleton
-      { name = "nginx";
-        gid = config.ids.gids."${cfg.group}"; # not really sound
-        uid = config.ids.uids.nginx;
-      });
+    # postRun hooks on cert renew can't be used to restart Nginx since renewal
+    # runs as the unprivileged acme user. sslTargets are added to wantedBy + before
+    # which allows the acme-finished-$cert.target to signify the successful updating
+    # of certs end-to-end.
+    #systemd.services.nginx-config-reload = let
+      #sslServices = map (certName: "acme-${certName}.service") dependentCertNames;
+      #sslTargets = map (certName: "acme-finished-${certName}.target") dependentCertNames;
+    #in mkIf (cfg.enableReload || sslServices != []) {
+      #wants = optionals (cfg.enableReload) [ "nginx.service" ];
+      #wantedBy = sslServices ++ [ "multi-user.target" ];
+      ## Before the finished targets, after the renew services.
+      ## This service might be needed for HTTP-01 challenges, but we only want to confirm
+      ## certs are updated _after_ config has been reloaded.
+      #before = sslTargets;
+      #after = sslServices;
+      #restartTriggers = optionals (cfg.enableReload) [ configFile ];
+      ## Block reloading if not all certs exist yet.
+      ## Happens when config changes add new vhosts/certs.
+      #unitConfig.ConditionPathExists = optionals (sslServices != []) (map (certName: certs.${certName}.directory + "/fullchain.pem") dependentCertNames);
+      #serviceConfig = {
+        #Type = "oneshot";
+        #TimeoutSec = 60;
+        #ExecCondition = "/run/current-system/systemd/bin/systemctl -q is-active nginx.service";
+        #ExecStart = "/run/current-system/systemd/bin/systemctl reload nginx.service";
+      #};
+    #};
 
-    users.groups = optionalAttrs (cfg.group == "nginx") (singleton
-      { name = "nginx";
-        gid = config.ids.gids.nginx;
-      });
+    # security.acme.certs = let
+    #   acmePairs = map (vhostConfig: nameValuePair vhostConfig.serverName {
+    #     group = mkDefault cfg.group;
+    #     webroot = vhostConfig.acmeRoot;
+    #     extraDomainNames = vhostConfig.serverAliases;
+    #   # Filter for enableACME-only vhosts. Don't want to create dud certs
+    #   }) (filter (vhostConfig: vhostConfig.useACMEHost == null) acmeEnabledVhosts);
+    # in listToAttrs acmePairs;
+
+    users.users = optionalAttrs (cfg.user == "nginx") {
+      nginx = {
+        gid = 42000;
+        uid = 42000;
+      };
+    };
+
+    users.groups = optionalAttrs (cfg.group == "nginx") {
+      nginx.gid = 42000;
+    };
+
   };
 }
