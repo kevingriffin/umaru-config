@@ -2,7 +2,9 @@
 
 {
   imports = [
+    (import ../modules/base-packages.nix { inherit config pkgs unstablePkgs; })
     (import ../modules/ruby-development.nix { inherit config pkgs unstablePkgs; })
+    ../darwin-modules/eikaiwa.nix
   ];
 
 

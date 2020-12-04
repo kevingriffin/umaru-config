@@ -3,9 +3,12 @@
 {
 
   imports = [
+    (import ../modules/base-packages.nix { inherit config pkgs unstablePkgs; })
     (import ../modules/ruby-development.nix { inherit config pkgs unstablePkgs; })
     (import ../modules/weechat.nix { inherit config; pkgs = unstablePkgs; })
+    ../darwin-modules/eikaiwa.nix
     ../darwin-modules/lorri.nix
+    ../darwin-modules/eikaiwa
   ];
 
 

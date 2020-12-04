@@ -1,57 +1,46 @@
 { config, pkgs, unstablePkgs, ... }:
-
 {
    environment.systemPackages = with pkgs; [
      unstablePkgs._1password
      ag
-     age
+     unstablePkgs.age
      unstablePkgs.aria2
      unstablePkgs.bat
      bind
      unstablePkgs.bottom
      colordiff
      unstablePkgs.gitAndTools.delta
-     direnv
-     unstablePkgs.diskonaut
-     fd
+     unstablePkgs.fd
+     fish
      unstablePkgs.fzf
-     gitAndTools.diff-so-fancy
-     unstablePkgs.gitAndTools.hub
-     gitFull
-     git-lfs
-     unstablePkgs.gitAndTools.gitui
-     gnumake
-     gnupg
-     hex
-     htop
-     httpie
+     # gitAndTools.diff-so-fancy
+     # unstablePkgs.gitAndTools.hub
+     # gitFull
+     # git-lfs
+     unstablePkgs.gnumake
+     unstablePkgs.gnupg
+     unstablePkgs.htop
+     unstablePkgs.httpie
      jq
-     jrnl
-     lego
+     unstablePkgs.lego
      lsof
      unstablePkgs.neovim
      unstablePkgs.nginx
-     mosh
-     nmap
-     nomino
-     overmind
+     unstablePkgs.nmap
+     unstablePkgs.overmind
      pfetch
-     procs
-     ranger
-     ripgrep
+     unstablePkgs.procs
+     unstablePkgs.ripgrep
      rsync
      speedtest-cli
      sshpass
      stow
-     tcpdump
-     unstablePkgs.tmate
+     tmate
      tig
      tmux
      tmux-cssh
      tree
      unzip
-     wget
-     wireshark
      unstablePkgs.xsv
      unstablePkgs.youtube-dl
      yank

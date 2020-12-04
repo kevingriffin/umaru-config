@@ -6,9 +6,7 @@ in
 {
 
   imports = [
-    (import ./modules/base-packages.nix { inherit config pkgs unstablePkgs; })
-    (import ./local.nix                 { inherit config pkgs unstablePkgs; })
-    ./darwin-modules/eikaiwa.nix
+    (import ./local.nix { inherit config pkgs unstablePkgs; })
     ./darwin-modules
   ];
 
@@ -17,7 +15,7 @@ in
   environment.darwinConfig = "$HOME/.config/nixpkgs/darwin-configuration.nix";
 
   # Auto upgrade nix package and the daemon service.
-  nix.package = pkgs.nix;
+  nix.package                = pkgs.nix;
   services.nix-daemon.enable = true;
 
   # Make sure fish is $SHELL
@@ -59,7 +57,9 @@ in
     challengeResponseAuthentication = false;
   };
 
-  nix.distributedBuilds = true;
+  nix = {
+    distributedBuilds = true;
+  };
 
   nixpkgs.config = {
     allowUnfree            = true;
