@@ -48,7 +48,6 @@
             targets = [
               "localhost:9100"
               "erika.kevin.jp:9100"
-              "haru.kevin.jp:9100"
               "pleinair.kevin.jp:9100"
             ];
           }
