@@ -102,6 +102,7 @@ in
         haru
         erika
         makoto
+        rinoa
       ];
     };
 
@@ -111,6 +112,7 @@ in
         haru
         erika
         umaru
+        rinoa
       ];
     };
 
@@ -119,6 +121,7 @@ in
       elements = with hosts.v6; [
         haru
         makoto
+        rinoa
       ];
     };
 
@@ -128,6 +131,7 @@ in
         erika
         umaru
         haru
+        rinoa
       ];
     };
 
@@ -155,7 +159,6 @@ in
     { protocol = "tcp"; port = 9826;  to = { host = umaru;  port = 9826;  }; } # qbittorrent
     { protocol = "tcp"; port = 8883;  to = { host = sesame; port = 50798; }; } # sesame wifi
     { protocol = "udp"; port = 9826;  to = { host = umaru;  port = 9826;  }; } # qbittorrent
-    { protocol = "udp"; port = 50798; to = { host = flonne; port = 50798; }; } # wireguard
     { protocol = "udp"; port = 123;   to = { host = sesame; port = 50798; }; } # sesame wifi
   ];
 
