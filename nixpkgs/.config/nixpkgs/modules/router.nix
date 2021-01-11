@@ -99,7 +99,6 @@ in
       type = "ipv6_addr";
       elements = with hosts.v6; [
         umaru
-        haru
         erika
         makoto
         rinoa
@@ -109,7 +108,6 @@ in
     tables.filter.sets.web-hosts = {
       type = "ipv6_addr";
       elements = with hosts.v6; [
-        haru
         erika
         umaru
         rinoa
@@ -119,7 +117,6 @@ in
     tables.filter.sets.ard-hosts = {
       type = "ipv6_addr";
       elements = with hosts.v6; [
-        haru
         makoto
         rinoa
       ];
@@ -130,7 +127,6 @@ in
       elements = with hosts.v6; [
         erika
         umaru
-        haru
         rinoa
       ];
     };
