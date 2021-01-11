@@ -35,7 +35,7 @@
 
         Network.freenode = {
           Server = "chat.freenode.net +6697 ${secrets.znc-freenode-password}";
-          Chan = { "#nix-darwin" = {}; };
+          Chan = { "nix" = {}; "#nix-darwin" = {}; "#weechat" = {}; "#wee-slack" = {}; };
           Nick = "kgriffin";
           LoadModule = [ "nickserv" ];
           JoinDelay = 2;
