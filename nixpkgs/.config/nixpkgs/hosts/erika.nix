@@ -3,8 +3,6 @@
 {
   imports = [
     ../modules/preboot-ssh.nix
-    ../modules/eikaiwa
-    ../modules/lorri.nix
     ../modules/vpn.nix
     (import ../modules/ruby-development.nix { inherit config pkgs unstablePkgs; })
     (import ../modules/weechat.nix          { inherit config; pkgs = unstablePkgs; })
@@ -59,6 +57,9 @@
     unstablePkgs.gitAndTools.hub
     gitFull
     git-lfs
+    seeing_is_believing
+    yubikey-manager
+    opensc
   ];
 
   services.nginx = {
@@ -77,13 +78,6 @@
       };
     };
   };
-
-  environment.systemPackages = with pkgs; [
-     phraseapp_updater
-     seeing_is_believing
-     yubikey-manager
-     opensc
-  ];
 
   services.prometheus.exporters.node = {
     enable = true;
