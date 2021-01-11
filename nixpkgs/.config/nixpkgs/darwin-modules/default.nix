@@ -5,6 +5,5 @@
     ./nginx
     ./openssh.nix
     ./ids.nix
-    ./node-exporter.nix
   ];
 }
