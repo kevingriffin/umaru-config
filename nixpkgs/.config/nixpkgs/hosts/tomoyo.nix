@@ -62,6 +62,8 @@
     };
   };
 
+  services.postgresql.enable = true;
+
   services.unifi = {
     enable       = true;
     unifiPackage = unstablePkgs.unifiStable;
