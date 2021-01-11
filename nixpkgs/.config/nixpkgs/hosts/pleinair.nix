@@ -31,6 +31,13 @@
     openFirewall = true;
   };
 
+  environment.systemPackages = with pkgs; [
+    gitAndTools.diff-so-fancy
+    unstablePkgs.gitAndTools.hub
+    gitFull
+    git-lfs
+  ];
+
   services.borgBackup = let
     secrets = import ../secrets.nix;
   in

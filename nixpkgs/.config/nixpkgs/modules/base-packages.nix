@@ -13,10 +13,6 @@
      unstablePkgs.fd
      fish
      unstablePkgs.fzf
-     # gitAndTools.diff-so-fancy
-     # unstablePkgs.gitAndTools.hub
-     # gitFull
-     # git-lfs
      unstablePkgs.gnumake
      unstablePkgs.gnupg
      unstablePkgs.htop
@@ -27,6 +23,7 @@
      unstablePkgs.neovim
      unstablePkgs.nginx
      unstablePkgs.nmap
+     unstablePkgs.onefetch
      unstablePkgs.overmind
      pfetch
      unstablePkgs.procs

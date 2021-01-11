@@ -8,6 +8,13 @@
   ];
 
 
+  environment.systemPackages = with pkgs; [
+    gitAndTools.diff-so-fancy
+    unstablePkgs.gitAndTools.hub
+    gitFull
+    git-lfs
+  ];
+
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;

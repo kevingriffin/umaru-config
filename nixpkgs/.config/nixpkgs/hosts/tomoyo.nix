@@ -33,6 +33,10 @@
      iknow-devops
      iknow-devops-legacy
      phraseapp_updater
+     gitAndTools.diff-so-fancy
+     unstablePkgs.gitAndTools.hub
+     gitFull
+     git-lfs
   ];
 
   time.timeZone = "Asia/Tokyo";
