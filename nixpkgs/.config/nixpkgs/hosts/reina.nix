@@ -12,6 +12,8 @@
     unstablePkgs.gitAndTools.hub
     gitFull
     git-lfs
+    id3v2
+    pythonPackages.eyeD3
   ];
 
   services.nginx = {
