@@ -18,17 +18,16 @@ in
   nix.package                = pkgs.nix;
   services.nix-daemon.enable = true;
 
-  # Make sure fish is $SHELL
   programs.fish = {
     enable               = true;
     interactiveShellInit = ''
         source (fzf-share)/key-bindings.fish
     '';
+    translateEnvironment = true;
   };
 
-  # If bash is enabled, it will be $SHELL, even
-  # with fish enabled
-  programs.bash.enable = false;
+  programs.bash.enable = true;
+  programs.zsh.enable  = true;
 
   # Set up fzf to go through hidden files
   # and use a fast rg backend
