@@ -30,11 +30,11 @@
     }];
 
     enable = true;
-    webExternalUrl = "https://tomoyo.kevin.jp/prometheus/";
+    webExternalUrl = "https://prometheus.kevin.jp/";
     scrapeConfigs = [
       {
         job_name = "prometheus";
-        metrics_path = "/prometheus/metrics";
+        metrics_path = "/metrics";
         static_configs = [{
           targets = [
             "localhost:9090"
@@ -47,13 +47,13 @@
           {
             targets = [
               "localhost:9100"
-              "erika.kevin.jp:9100"
               "pleinair.kevin.jp:9100"
             ];
           }
 
           {
             targets = [
+              "erika.kevin.jp:9100"
               "umaru.kevin.jp:9100"
             ];
             labels =  {
