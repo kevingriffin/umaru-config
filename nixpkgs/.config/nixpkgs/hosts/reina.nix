@@ -29,8 +29,6 @@
     };
   };
 
-  services.prometheus.exporters.node.enable = true;
-
   nix.maxJobs = 4;
   nix.buildCores = 3;
 }

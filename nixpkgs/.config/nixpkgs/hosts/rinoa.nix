@@ -10,6 +10,7 @@ in
     (import ../modules/base-packages.nix { inherit config unstablePkgs; pkgs = nativePackages; })
     (import ../modules/ruby-development.nix { inherit config unstablePkgs; pkgs = nativePackages; })
     (import ../modules/weechat.nix { inherit config; pkgs = unstablePkgs; })
+    <iknow/darwin-modules>
   ];
 
   nixpkgs.config.packageOverrides = pkgs: {
@@ -17,6 +18,10 @@ in
   };
 
   nix.extraOptions = "extra-platforms = x86_64-darwin aarch64-darwin";
+
+  environment.systemPackages = [
+     pkgs.branchctl
+  ];
 
   services.nginx = {
     enable = true;
@@ -35,8 +40,6 @@ in
       sslCertificateKey = "/etc/nginx/lego/certificates/rinoa.kevin.jp.key";
     };
   };
-
-  services.prometheus.exporters.node.enable = true;
 
   # You should generally set this to the total number of logical cores in your system.
   # $ sysctl -n hw.ncpu
