@@ -21,7 +21,13 @@ in
 
   environment.systemPackages = [
      pkgs.branchctl
+     nativePackages.opensc
   ];
+
+  system.activationScripts.extraActivation.text = ''
+    mkdir -p /usr/local/lib
+    cp ${nativePackages.opensc}/lib/opensc-pkcs11.so /usr/local/lib
+  '';
 
   services.nginx = {
     enable = true;
