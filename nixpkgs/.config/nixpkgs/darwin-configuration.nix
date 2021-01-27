@@ -23,7 +23,8 @@ in
     interactiveShellInit = ''
         source (fzf-share)/key-bindings.fish
     '';
-    translateEnvironment = true;
+    useBabelfish = true;
+    babelfishPackage = pkgs.babelfish;
   };
 
   programs.bash.enable = true;

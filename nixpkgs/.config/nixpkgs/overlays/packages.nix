@@ -1,4 +1,5 @@
 self: super: {
+  babelfish = super.callPackage ./packages/babelfish.nix {};
   seeing_is_believing = super.callPackage ./packages/seeing_is_believing/default.nix {};
   iknow-devops = super.callPackage ./packages/iknow-devops.nix {};
   iknow-devops-legacy = super.callPackage ./packages/iknow-devops-legacy.nix {};
