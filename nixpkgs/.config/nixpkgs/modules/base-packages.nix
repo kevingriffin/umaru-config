@@ -28,6 +28,7 @@
      unstablePkgs.onefetch
      unstablePkgs.overmind
      pfetch
+     pigz
      unstablePkgs.procs
      unstablePkgs.ripgrep
      rsync
@@ -44,5 +45,6 @@
      unstablePkgs.youtube-dl
      yank
      unstablePkgs.yubikey-manager
+     zstd
    ];
 }
