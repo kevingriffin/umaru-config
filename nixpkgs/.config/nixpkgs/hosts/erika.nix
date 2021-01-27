@@ -89,7 +89,9 @@
   system.activationScripts.userActivationScripts =
           ''
             mkdir -p /usr/lib
-            cp ${pkgs.opensc}/lib/opensc-pkcs11.so /usr/lib
+            if ! (cmp -s ${pkgs.opensc}/lib/opensc-pkcs11.so /usr/lib/opensc-pkcs11.so) ; then
+              cp ${pkgs.opensc}/lib/opensc-pkcs11.so /usr/lib
+            fi
           '';
 
   environment.variables.OPENSC="/usr/lib/opensc-pkcs11.so";

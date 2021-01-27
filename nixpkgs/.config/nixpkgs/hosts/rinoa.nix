@@ -25,7 +25,9 @@ in
 
   system.activationScripts.extraActivation.text = ''
     mkdir -p /usr/local/lib
-    cp ${nativePackages.opensc}/lib/opensc-pkcs11.so /usr/local/lib
+    if ! (cmp -s ${nativePackages.opensc}/lib/opensc-pkcs11.so /usr/local/lib/opensc-pkcs11.so) ; then
+      cp ${nativePackages.opensc}/lib/opensc-pkcs11.so /usr/local/lib
+    fi
   '';
 
   services.nginx = {
