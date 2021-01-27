@@ -61,7 +61,7 @@
     renderPorts = ports: map toString ports;
     renderPortRanges = ranges: map ({ from, to }: "${toString from}-${toString to}") ranges;
     allow = proto: ports: ranges: lib.optionalString (ports != [] || ranges != []) ''
-      iif ${internalIf} ${proto} dport { ${lib.concatStringsSep "," (renderPorts ports ++ renderPortRanges ranges) } } \
+      ${proto} dport { ${lib.concatStringsSep "," (renderPorts ports ++ renderPortRanges ranges) } } \
         counter accept comment "networking.firewall allowed ports"
     '';
   in
