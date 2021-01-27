@@ -60,7 +60,12 @@ in
   # Set up fzf to go through hidden files
   # and use a fast rg backend
   environment.variables.FZF_DEFAULT_COMMAND = "rg --files --hidden -g='!.git'";
+  environment.variables.FZF_DEFAULT_OPTS    = "--ansi --preview-window=right:60% --height 90%";
+  environment.variables.FZF_CTRL_T_OPTS     = "--preview 'bat --color=always --style=numbers {}'";
   environment.variables.FZF_CTRL_T_COMMAND  = "rg --files --hidden -g='!.git'";
+
+  # cd into directories with fd
+  environment.variables.FZF_ALT_C_COMMAND = "fd -t d .";
 
   services.openssh = {
     enable                          = true;
