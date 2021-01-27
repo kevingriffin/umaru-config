@@ -5,7 +5,10 @@
 { config, pkgs, lib, ... }:
 
 let
-  unstablePkgs = import<nixpkgs-unstable> { config.allowUnfree = true; };
+  unstablePkgs = import<nixpkgs-unstable> {
+    config.allowUnfree = true;
+    overlays = [ (import ./overlays/packages.nix) ];
+  };
 in
 {
   imports = [

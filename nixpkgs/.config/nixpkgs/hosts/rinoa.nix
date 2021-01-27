@@ -1,7 +1,6 @@
 { config, pkgs, unstablePkgs, ... }:
 
 let
-  unstablePkgs   = import<nixpkgs-unstable> {};
   nativePackages = import "/Users/kevin/src/nixpkgs" { localSystem = "aarch64-darwin"; };
 in
 {

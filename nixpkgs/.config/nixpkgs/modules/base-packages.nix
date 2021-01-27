@@ -17,6 +17,8 @@
      unstablePkgs.gnupg
      unstablePkgs.htop
      unstablePkgs.httpie
+     unstablePkgs.iterm2-integration
+     unstablePkgs.osc52-pbcopy
      jq
      unstablePkgs.lego
      lsof
