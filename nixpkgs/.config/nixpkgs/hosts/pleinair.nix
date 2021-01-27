@@ -8,7 +8,7 @@
       ../modules/dns.nix
       ../modules/borg-backup
       ../modules/router-wireguard.nix
-      ../modules/zigbee2mqtt.nix
+      (import ../modules/zigbee2mqtt.nix { inherit config; pkgs = unstablePkgs; })
       (import ../modules/hass.nix { inherit config pkgs unstablePkgs; })
     ];
 
