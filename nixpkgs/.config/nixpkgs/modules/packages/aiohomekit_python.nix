@@ -2,11 +2,11 @@
 
 buildPythonPackage rec {
   pname = "aiohomekit";
-  version = "0.2.54";
+  version = "0.2.60";
 
   src = fetchPypi {
     inherit version pname;
-    sha256 = "0canwj6j12cal8gi8wgdf5h37w0gi08ylkv6mmj259iqqkz1ajpj";
+    sha256 = "02sqzp0z04sdyj467y4xv3iv6qk26gz7f77rrlpgvz0m5g96vnkh";
   };
 
   doCheck = false;

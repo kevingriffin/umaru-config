@@ -1,8 +1,8 @@
 { config, pkgs, unstablePkgs, ... }:
 let
   pinnedPkgs = import (builtins.fetchTarball {
-    url    = "https://releases.nixos.org/nixpkgs/nixpkgs-21.03pre251181.dd1b7e377f6/nixexprs.tar.xz";
-    sha256 = "1xr5v42ww1wq6zlryxwnk4q80bh47zrnl575jl11npqbrzci52w1";
+    url    = "https://releases.nixos.org/nixpkgs/nixpkgs-21.03pre266289.6834d03bb56/nixexprs.tar.xz";
+    sha256 = "0s80a8wahfrs4z78yvr4ikbw7p1xfkj5qm4kqy25jh863xkalch4";
   }) {};
 in
 {

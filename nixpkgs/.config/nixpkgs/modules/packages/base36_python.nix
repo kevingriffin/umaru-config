@@ -10,8 +10,4 @@ buildPythonPackage rec {
   };
 
   doCheck = false;
-
-  propagatedBuildInputs = [
-    # pythonPackages.requests
-  ];
 }
