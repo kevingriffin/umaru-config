@@ -34,7 +34,7 @@ in
         enable = true;
         port = 2022;
         authorizedKeys = (identities kevin-cfg.preboot-ssh.identityFile);
-        hostECDSAKey = /etc/nixos/ecdsa_host_key;
+        hostKeys = [ /etc/nixos/ecdsa_host_key ];
       };
     };
   };

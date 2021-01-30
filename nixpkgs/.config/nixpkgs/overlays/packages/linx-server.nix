@@ -10,7 +10,7 @@ buildGoModule rec {
     sha256 = "00rv13iq8dnws14zghf9p0ja6jj7j66iq9srzmlsjn9pdbr2rkl7";
   };
 
-   modSha256 = "052l2xf2i67jrka0kvcga6swi7qnjjrma9y35i8whaivwnrhbar2";
+  vendorSha256 = "15r2rl1s4cj0s0z5kfn9p1hw3isyrnig65rfjrvxl47jndgc1pgw";
 
   nativeBuildInputs = with pkgs; [
     go-rice

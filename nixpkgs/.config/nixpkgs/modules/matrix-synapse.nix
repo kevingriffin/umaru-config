@@ -9,10 +9,12 @@
 
   security.acme.certs = {
     "matrix.kevin.jp" = {
-      group = "matrix-synapse";
-      allowKeysForGroup = true;
       postRun = "systemctl reload nginx.service; systemctl restart matrix-synapse.service";
     };
+  };
+
+  users.users.matrix-synapse = {
+    extraGroups  = [ "nginx" ];
   };
 
   services.nginx = {
