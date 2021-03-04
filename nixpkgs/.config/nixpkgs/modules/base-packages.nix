@@ -3,34 +3,35 @@
    environment.systemPackages = with pkgs; [
      unstablePkgs._1password
      ag
-     unstablePkgs.age
-     unstablePkgs.aria2
-     unstablePkgs.bat
+     age
+     aria2
+     bat
      bind
      unstablePkgs.bottom
+     unstablePkgs.bundix
      colordiff
-     unstablePkgs.gitAndTools.delta
-     unstablePkgs.fd
+     gitAndTools.delta
+     fd
      fish
-     unstablePkgs.fzf
-     unstablePkgs.gnumake
+     fzf
+     gnumake
      unstablePkgs.gnupg
-     unstablePkgs.htop
+     htop
      unstablePkgs.httpie
-     unstablePkgs.iterm2-integration
-     unstablePkgs.osc52-pbcopy
+     iterm2-integration
+     osc52-pbcopy
      jq
-     unstablePkgs.lego
+     lego
      lsof
-     unstablePkgs.neovim
-     unstablePkgs.nginx
-     unstablePkgs.nmap
+     neovim
+     nginx
+     nmap
      unstablePkgs.onefetch
-     unstablePkgs.overmind
+     overmind
      pfetch
      pigz
-     unstablePkgs.procs
-     unstablePkgs.ripgrep
+     procs
+     ripgrep
      rsync
      speedtest-cli
      sshpass
@@ -41,7 +42,7 @@
      tmux-cssh
      tree
      unzip
-     unstablePkgs.xsv
+     xsv
      unstablePkgs.youtube-dl
      yank
      unstablePkgs.yubikey-manager
