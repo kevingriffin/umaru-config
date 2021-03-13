@@ -25,7 +25,7 @@
      lsof
      neovim
      nginx
-     nmap
+     nmap-unfree
      unstablePkgs.onefetch
      overmind
      pfetch
