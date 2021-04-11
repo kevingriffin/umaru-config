@@ -97,7 +97,7 @@
   environment.variables.OPENSC="/usr/lib/opensc-pkcs11.so";
 
   kevin.preboot-ssh = {
-    enable = true;
+    enable = false;
     identityFile = "/home/kevin/identities/ssh.json";
   };
 

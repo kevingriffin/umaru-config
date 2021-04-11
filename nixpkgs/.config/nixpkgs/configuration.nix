@@ -55,6 +55,7 @@ in
     interactiveShellInit = ''
         source (fzf-share)/key-bindings.fish
     '';
+    useBabelfish = true;
   };
 
   # Set up fzf to go through hidden files
