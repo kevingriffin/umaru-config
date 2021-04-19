@@ -1,23 +1,19 @@
-{ config, pkgs, unstablePkgs, ... }:
+{ config, pkgs, ... }:
 {
    environment.systemPackages = with pkgs; [
-     unstablePkgs._1password
      ag
      age
-     aria2
      bat
      bind
-     unstablePkgs.bottom
-     unstablePkgs.bundix
+     bundix
      colordiff
      gitAndTools.delta
      fd
-     fish
      fzf
      gnumake
-     unstablePkgs.gnupg
+     gnupg
      htop
-     unstablePkgs.httpie
+     httpie
      iterm2-integration
      osc52-pbcopy
      jq
@@ -26,7 +22,6 @@
      neovim
      nginx
      nmap-unfree
-     unstablePkgs.onefetch
      overmind
      pfetch
      pigz
@@ -43,9 +38,8 @@
      tree
      unzip
      xsv
-     unstablePkgs.youtube-dl
+     youtube-dl
      yank
-     unstablePkgs.yubikey-manager
      zstd
    ];
 }
